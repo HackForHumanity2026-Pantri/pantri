@@ -32,4 +32,5 @@ class Requests(BaseModel):
     find_urgency = Column(String, nullable=True)
     find_created_at = Column(DateTime, nullable=True)
     
+	#completion details
     completed_session = Column(Boolean, default=False)

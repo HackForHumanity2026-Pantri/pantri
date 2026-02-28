@@ -6,11 +6,6 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-from config import get_logger
-
-logger = get_logger(__name__)
-
-
 def _build_database_url() -> str:
     """Resolve the database URL from env vars, falling back to individual credentials."""
     url = os.getenv("DATABASE_URL")

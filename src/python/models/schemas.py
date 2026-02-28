@@ -7,7 +7,9 @@ class Sources(BaseModel):
 	id: str
 	name: str
 	type: str
-	address: str  
+	address: str 
+	state: str
+	city: str
 	lat: float
 	ing: float
 	phone: str
