@@ -11,7 +11,7 @@ source venv/bin/activate
 ```
 venv\Scripts\activate
 ```
-
+Then do pip -r requirements.txt
 Create a `.env` file in the python folder and put this:
 
 ```python
