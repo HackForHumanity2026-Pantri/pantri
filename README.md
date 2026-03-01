@@ -1,26 +1,40 @@
 # Pantri
 
-### To set up backend
-Create a venv with:
+## Quick Start
 
-```python
-python -m venv venv
-source venv/bin/activate
+```bash
+bash setup.sh
 ```
-# On Windows:
-```
-venv\Scripts\activate
-```
-Then do pip -r requirements.txt
-Create a `.env` file in the python folder and put this:
 
-```python
+This creates a virtual environment, installs dependencies, writes a default `.env`
+(SQLite for local dev), and starts the FastAPI backend on **http://127.0.0.1:3000**.
+
+Then open `Hack For Humanity/Hack For Humanity.xcodeproj` in Xcode and run the iOS
+app — it already points at `http://127.0.0.1:3000`.
+
+### Manual Backend Setup
+
+```bash
+cd src/python
+python3 -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Create a `.env` file in `src/python/` (only if you want PostgreSQL):
+
+```
 POSTGRES_PASSWORD=""
 POSTGRES_USER=""
 POSTGRES_HOST="localhost"
 POSTGRES_DB="pantri"
 ```
- Run main.py
+
+Start the server:
+
+```bash
+python main.py   # serves on http://127.0.0.1:3000
+```
 To get your changes into the `main` branch, follow these steps:
 
 ### Option 1: Merge via Pull Request (Recommended)

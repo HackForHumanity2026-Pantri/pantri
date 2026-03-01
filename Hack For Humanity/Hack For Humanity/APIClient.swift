@@ -15,7 +15,7 @@ final class APIClient {
     static let shared = APIClient()
 
     var mode: APIMode = .mock
-    var baseURL: String = "http://127.0.0.1:8000"
+    var baseURL: String = "http://127.0.0.1:3000"
 
     private let store = MockDataStore.shared
 
