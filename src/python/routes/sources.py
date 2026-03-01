@@ -97,6 +97,8 @@ def source_to_api_response(source, user_lat=None, user_lng=None):
         "name": source.name or "",
         "phone": source.phone or "",
         "address": source.address or "",
+        "city": source.city or "",
+        "state": source.state or "",
         "latitude": float(source.lat) if source.lat else 0.0,
         "longitude": float(source.lng) if source.lng else 0.0,
         "sourceType": source_type,
@@ -144,9 +146,9 @@ async def get_sources(
 
 @router.get("/sources/search")
 async def search_sources(
-    food_type: str,
-    urgent_level: str,
-    transportation: str,
+    food_type: Optional[str] = None,
+    urgent_level: Optional[str] = None,
+    transportation: Optional[str] = None,
     address: Optional[str] = None,
     city: Optional[str] = None,
     lat: Optional[float] = None,
