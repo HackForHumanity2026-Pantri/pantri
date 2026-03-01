@@ -1,8 +1,13 @@
 # Pantri
 # AI will document...
 
-## How to Push Changes to the Main Branch
-
+### Make sure you have a postgres account
+In a .env folder put this then run main.py
+ POSTGRES_PASSWORD=""
+ POSTGRES_USER=""
+ POSTGRES_HOST="localhost"
+ POSTGRES_DB="pantri"
+ 
 To get your changes into the `main` branch, follow these steps:
 
 ### Option 1: Merge via Pull Request (Recommended)
@@ -36,12 +41,6 @@ git push origin main
 # Merge the open PR (replace <PR-number> with the actual PR number)
 gh pr merge <PR-number> --merge
 
-### Make sure you have a postgres account
-In a .env folder put this then run main.py
- POSTGRES_PASSWORD=""
- POSTGRES_USER=""
- POSTGRES_HOST="localhost"
- POSTGRES_DB="pantri"
 
 
 ```
