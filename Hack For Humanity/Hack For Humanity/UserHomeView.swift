@@ -45,29 +45,41 @@ struct UserHomeView: View {
     // MARK: - Header
 
     private var headerSection: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Welcome to")
-                    .font(PantriFonts.subheadline)
-                    .foregroundStyle(PantriColors.secondaryText)
-                Image("PantriLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 32)
+        VStack(spacing: PantriSpacing.sm) {
+            HStack {
+                Button {
+                    Haptics.tap()
+                    withAnimation(PantriAnimation.snappy) {
+                        appState.hasCompletedOnboarding = false
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 14, weight: .semibold))
+                        Text("Back")
+                            .font(PantriFonts.subheadline)
+                    }
+                    .foregroundStyle(PantriColors.green)
+                }
+                Spacer()
+                // Location badge
+                HStack(spacing: 4) {
+                    Image(systemName: "location.fill")
+                        .font(.system(size: 12))
+                    Text(appState.defaultCity)
+                        .font(PantriFonts.footnote)
+                }
+                .foregroundStyle(PantriColors.green)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(PantriColors.lightGreen)
+                .clipShape(Capsule())
             }
-            Spacer()
-            // Location badge
-            HStack(spacing: 4) {
-                Image(systemName: "location.fill")
-                    .font(.system(size: 12))
-                Text(appState.defaultCity)
-                    .font(PantriFonts.footnote)
-            }
-            .foregroundStyle(PantriColors.green)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(PantriColors.lightGreen)
-            .clipShape(Capsule())
+
+            Image("PantriLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 56)
         }
         .padding(.top, PantriSpacing.md)
         .opacity(appeared ? 1 : 0)

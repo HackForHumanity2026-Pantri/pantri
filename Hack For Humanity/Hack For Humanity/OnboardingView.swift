@@ -22,11 +22,16 @@ struct OnboardingView: View {
                 Spacer()
 
                 // Logo
-                VStack(spacing: PantriSpacing.md) {
+                VStack(spacing: PantriSpacing.lg) {
                     Image("PantriLogo")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 200)
+                        .frame(width: 280)
+                        .clipShape(RoundedRectangle(cornerRadius: PantriRadius.lg, style: .continuous))
+                        .shadow(
+                            color: PantriColors.green.opacity(0.15),
+                            radius: 20, y: 8
+                        )
                         .accessibilityLabel("Pantri logo")
                         .scaleEffect(logoScale)
                         .opacity(logoOpacity)

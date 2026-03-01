@@ -31,6 +31,23 @@ struct MatchResultsView: View {
         .background(PantriColors.background)
         .navigationTitle("Your Matches")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    Haptics.tap()
+                    appState.showMatchResults = false
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 16, weight: .semibold))
+                        Text("Back")
+                            .font(PantriFonts.subheadline)
+                    }
+                    .foregroundStyle(PantriColors.green)
+                }
+            }
+        }
         .sheet(item: $selectedMatch) { match in
             MatchDetailSheet(match: match, appState: appState, onSMS: {
                 selectedForSMS = match

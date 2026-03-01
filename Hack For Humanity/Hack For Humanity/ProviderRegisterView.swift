@@ -174,6 +174,24 @@ struct ProviderRegisterView: View {
             .background(PantriColors.background)
             .navigationTitle("Register")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        Haptics.tap()
+                        withAnimation(PantriAnimation.snappy) {
+                            appState.hasCompletedOnboarding = false
+                        }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 14, weight: .semibold))
+                            Text("Back")
+                                .font(PantriFonts.subheadline)
+                        }
+                        .foregroundStyle(PantriColors.green)
+                    }
+                }
+            }
         }
     }
 
