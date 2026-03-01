@@ -3,14 +3,14 @@
 
 ### To set up backend
 Create a venv with
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+'''python -m venv venv
+source venv/bin/activate'''  # On Windows: venv\Scripts\activate
 
 In a .env folder put this:
- POSTGRES_PASSWORD=""
+ '''POSTGRES_PASSWORD=""
  POSTGRES_USER=""
  POSTGRES_HOST="localhost"
- POSTGRES_DB="pantri"
+ POSTGRES_DB="pantri"'''
 
  Run main.py 
  
