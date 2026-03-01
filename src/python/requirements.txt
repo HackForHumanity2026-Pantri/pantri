@@ -30,8 +30,11 @@ requests==2.26.0
 SQLAlchemy==1.4.27
 starlette==0.52.1
 toml==0.10.2
+twilio==9.10.2
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==1.26.20
 uvicorn==0.41.0
+websockets==16.0
 Werkzeug==3.1.6
+python-multipart==0.0.22

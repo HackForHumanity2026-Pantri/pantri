@@ -15,6 +15,9 @@ class Change(BaseModel):
     confidence: float = Field(
         ..., ge=0.0, le=1.0, description="Model confidence 0-1"
     )
+    evidence: Optional[str] = Field(
+        None, description="Verbatim sentence(s) from transcript supporting this change"
+    )
 
 
 class ChangeRequest(BaseModel):

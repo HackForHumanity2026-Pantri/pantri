@@ -27,6 +27,7 @@ from models.models import Sources
 from voice.models import PendingProposal, AuditLog
 from voice.schemas import Change, ChangeRequest
 from voice.db_apply import apply_changes, CONFIDENCE_THRESHOLD
+from voice.agent_extract import SYSTEM_PROMPT, FEW_SHOT_EXAMPLES, build_prompt
 
 TEST_DATABASE_URL = "sqlite:///test_pantri.db"
 test_engine = create_engine(
@@ -278,3 +279,178 @@ def test_ingest_call_ollama_failure(mock_post):
     data = resp.json()
     assert data["applied"] is False
     assert data["proposed_change"] is None
+
+
+# ── Prompt template tests ────────────────────────────────────────────
+
+
+def test_prompt_requires_json_only():
+    """System prompt must instruct model to produce JSON only."""
+    assert "valid JSON" in SYSTEM_PROMPT
+    assert "no markdown" in SYSTEM_PROMPT.lower() or "No markdown" in SYSTEM_PROMPT
+
+
+def test_prompt_allowed_fields():
+    """All required fields must be listed in the system prompt."""
+    for field in ("hours", "phone", "address", "food_type",
+                  "isAccessibleViaPublicTransport", "notes", "wait_time"):
+        assert field in SYSTEM_PROMPT, f"Missing field '{field}' in SYSTEM_PROMPT"
+
+
+def test_prompt_evidence_requirement():
+    """Prompt must require evidence sentences."""
+    assert "evidence" in SYSTEM_PROMPT.lower()
+
+
+def test_prompt_empty_changes_rule():
+    """Prompt must explain returning empty changes list."""
+    assert '"changes": []' in SYSTEM_PROMPT or "changes" in SYSTEM_PROMPT
+
+
+def test_few_shot_examples_present():
+    """There must be at least 3 few-shot examples."""
+    assert FEW_SHOT_EXAMPLES.count("EXAMPLE") >= 3
+
+
+def test_few_shot_no_change_example():
+    """One example should show no changes (changes=[])."""
+    assert '"changes": []' in FEW_SHOT_EXAMPLES
+
+
+def test_build_prompt_includes_transcript():
+    """build_prompt must embed transcript and source_id."""
+    result = build_prompt(42, "Hello, our hours changed.")
+    assert "source_id: 42" in result
+    assert "Hello, our hours changed." in result
+    assert "--- TRANSCRIPT ---" in result
+
+
+# ── Evidence field tests ─────────────────────────────────────────────
+
+
+def test_change_schema_with_evidence():
+    """Change model should accept an evidence string."""
+    c = Change(
+        field="phone",
+        new_value="555-1234",
+        confidence=0.95,
+        evidence="our phone number changed to 555-1234",
+    )
+    assert c.evidence == "our phone number changed to 555-1234"
+
+
+def test_change_schema_evidence_optional():
+    """Evidence should be optional for backward compatibility."""
+    c = Change(field="phone", new_value="555-0000", confidence=0.90)
+    assert c.evidence is None
+
+
+# ── Field mapping tests ──────────────────────────────────────────────
+
+
+@patch("voice.ollama_client.requests.post")
+def test_ingest_call_field_mapping_food_type(mock_post):
+    """LLM field 'food_type' should map to DB column 'types_json'."""
+    db = TestSessionLocal()
+    _seed_source(db)
+    db.close()
+
+    mapped_response = json.dumps({
+        "source_id": 1,
+        "changes": [
+            {
+                "field": "food_type",
+                "new_value": "hot meals, groceries",
+                "confidence": 0.95,
+                "evidence": "we now serve hot meals and groceries",
+            }
+        ],
+        "summary": "Updated food type",
+    })
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {"response": mapped_response}
+    mock_resp.raise_for_status = MagicMock()
+    mock_post.return_value = mock_resp
+
+    resp = client.post("/ingest_call", json={
+        "source_id": 1,
+        "transcript": "We now serve hot meals and groceries.",
+    })
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["applied"] is True
+    assert "food_type" in data["diff"]
+
+    # Verify DB column types_json was updated
+    db = TestSessionLocal()
+    src = db.query(Sources).get(1)
+    assert src.types_json == "hot meals, groceries"
+    db.close()
+
+
+@patch("voice.ollama_client.requests.post")
+def test_ingest_call_field_mapping_wait_time(mock_post):
+    """LLM field 'wait_time' should map to DB column 'duration'."""
+    db = TestSessionLocal()
+    _seed_source(db)
+    db.close()
+
+    mapped_response = json.dumps({
+        "source_id": 1,
+        "changes": [
+            {
+                "field": "wait_time",
+                "new_value": "20 minutes",
+                "confidence": 0.92,
+                "evidence": "Usually about 20 minutes.",
+            }
+        ],
+        "summary": "Updated wait time",
+    })
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {"response": mapped_response}
+    mock_resp.raise_for_status = MagicMock()
+    mock_post.return_value = mock_resp
+
+    resp = client.post("/ingest_call", json={
+        "source_id": 1,
+        "transcript": "Usually about 20 minutes wait.",
+    })
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["applied"] is True
+
+    db = TestSessionLocal()
+    src = db.query(Sources).get(1)
+    assert src.duration == "20 minutes"
+    db.close()
+
+
+# ── Twilio endpoint tests ───────────────────────────────────────────
+
+
+def test_twilio_voice_outbound_returns_twiml():
+    """POST /twilio/voice/outbound should return TwiML with Stream."""
+    resp = client.post("/twilio/voice/outbound")
+    assert resp.status_code == 200
+    assert "application/xml" in resp.headers["content-type"]
+    assert "<Stream" in resp.text
+    assert "<Response>" in resp.text
+
+
+def test_twilio_voice_inbound_returns_twiml():
+    """POST /twilio/voice/inbound should return TwiML with Stream."""
+    resp = client.post("/twilio/voice/inbound")
+    assert resp.status_code == 200
+    assert "<Stream" in resp.text
+
+
+def test_twilio_call_status_callback():
+    """POST /twilio/call-status should accept status updates."""
+    resp = client.post(
+        "/twilio/call-status",
+        data={"CallSid": "CA123", "CallStatus": "completed"},
+    )
+    assert resp.status_code == 204

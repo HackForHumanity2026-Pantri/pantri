@@ -14,12 +14,30 @@ logger = logging.getLogger(__name__)
 
 CONFIDENCE_THRESHOLD = 0.90
 
-# Columns that may be updated via the voice pipeline.
-ALLOWED_FIELDS = {
-    "name", "phone", "address", "city", "state", "zip",
-    "hours_json", "types_json", "availability", "excess_food",
-    "is_accessible", "duration",
+# Mapping from LLM field names → actual Sources column names.
+FIELD_MAP: Dict[str, str] = {
+    "hours": "hours_json",
+    "phone": "phone",
+    "address": "address",
+    "food_type": "types_json",
+    "isAccessibleViaPublicTransport": "is_accessible",
+    "notes": "notes",
+    "wait_time": "duration",
+    # Legacy field names (backward compatibility)
+    "name": "name",
+    "city": "city",
+    "state": "state",
+    "zip": "zip",
+    "hours_json": "hours_json",
+    "types_json": "types_json",
+    "availability": "availability",
+    "excess_food": "excess_food",
+    "is_accessible": "is_accessible",
+    "duration": "duration",
 }
+
+# Columns that may be updated via the voice pipeline.
+ALLOWED_FIELDS = set(FIELD_MAP.values())
 
 
 def apply_changes(
@@ -49,17 +67,19 @@ def apply_changes(
     if all_confident:
         try:
             for change in change_req.changes:
-                if change.field not in ALLOWED_FIELDS:
+                # Resolve LLM field name → DB column via FIELD_MAP
+                col_name = FIELD_MAP.get(change.field)
+                if col_name is None or col_name not in ALLOWED_FIELDS:
                     logger.warning("Skipping disallowed field: %s", change.field)
                     continue
 
-                old_val = getattr(source, change.field, None)
-                setattr(source, change.field, change.new_value)
+                old_val = getattr(source, col_name, None)
+                setattr(source, col_name, change.new_value)
                 diff[change.field] = {"old": old_val, "new": change.new_value}
 
                 db.add(AuditLog(
                     source_id=change_req.source_id,
-                    field=change.field,
+                    field=col_name,
                     old_value=json.dumps(old_val) if old_val is not None else None,
                     new_value=json.dumps(change.new_value) if change.new_value is not None else None,
                     confidence=change.confidence,
