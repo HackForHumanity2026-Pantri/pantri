@@ -23,6 +23,8 @@ class Sources(Base):
     availability = Column(String)
     excess_food  = Column(Boolean)
     notes        = Column(String, nullable=True)
+    verification_status    = Column(String, nullable=True)
+    verification_failed_at = Column(DateTime, nullable=True)
 
 class Restaurants(Base):
     __tablename__ = "restaurants"

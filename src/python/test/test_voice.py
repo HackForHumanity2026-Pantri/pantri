@@ -454,3 +454,112 @@ def test_twilio_call_status_callback():
         data={"CallSid": "CA123", "CallStatus": "completed"},
     )
     assert resp.status_code == 204
+
+
+# ── source_id propagation tests ─────────────────────────────────────
+
+
+def test_twilio_voice_outbound_includes_source_id_parameter():
+    """When source_id is in query params, TwiML should include a <Parameter> tag."""
+    resp = client.post("/twilio/voice/outbound?source_id=42")
+    assert resp.status_code == 200
+    assert 'name="source_id"' in resp.text
+    assert 'value="42"' in resp.text
+
+
+def test_twilio_voice_outbound_no_source_id():
+    """Without source_id the TwiML should NOT include a <Parameter> tag."""
+    resp = client.post("/twilio/voice/outbound")
+    assert resp.status_code == 200
+    assert "<Parameter" not in resp.text
+
+
+# ── AuditLog enhanced fields tests ─────────────────────────────────
+
+
+@patch("voice.ollama_client.requests.post")
+def test_audit_log_stores_transcript_and_extracted_json(mock_post):
+    """AuditLog rows should contain raw_transcript and extracted_json."""
+    db = TestSessionLocal()
+    _seed_source(db)
+    db.close()
+
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {"response": MOCK_OLLAMA_RESPONSE}
+    mock_resp.raise_for_status = MagicMock()
+    mock_post.return_value = mock_resp
+
+    transcript_text = "Hi, our new phone number is 408-777-7777."
+    resp = client.post("/ingest_call", json={
+        "source_id": 1,
+        "transcript": transcript_text,
+    })
+    assert resp.status_code == 200
+    assert resp.json()["applied"] is True
+
+    db = TestSessionLocal()
+    log = db.query(AuditLog).filter_by(source_id=1).first()
+    assert log is not None
+    assert log.raw_transcript == transcript_text
+    assert log.extracted_json is not None
+    assert isinstance(log.extracted_json, list)
+    db.close()
+
+
+# ── verification_failed marking tests ──────────────────────────────
+
+
+def test_call_status_failed_marks_source():
+    """A 'failed' call status should mark the source as verification_failed."""
+    db = TestSessionLocal()
+    _seed_source(db)
+    db.close()
+
+    resp = client.post(
+        "/twilio/call-status?source_id=1",
+        data={"CallSid": "CA999", "CallStatus": "failed"},
+    )
+    assert resp.status_code == 204
+
+    db = TestSessionLocal()
+    src = db.query(Sources).get(1)
+    assert src.verification_status == "verification_failed"
+    assert src.verification_failed_at is not None
+    db.close()
+
+
+def test_call_status_noanswer_marks_source():
+    """A 'no-answer' call status should mark the source as verification_failed."""
+    db = TestSessionLocal()
+    _seed_source(db)
+    db.close()
+
+    resp = client.post(
+        "/twilio/call-status?source_id=1",
+        data={"CallSid": "CA888", "CallStatus": "no-answer"},
+    )
+    assert resp.status_code == 204
+
+    db = TestSessionLocal()
+    src = db.query(Sources).get(1)
+    assert src.verification_status == "verification_failed"
+    db.close()
+
+
+def test_call_status_completed_does_not_mark():
+    """A 'completed' status should NOT mark the source as verification_failed."""
+    db = TestSessionLocal()
+    _seed_source(db)
+    db.close()
+
+    resp = client.post(
+        "/twilio/call-status?source_id=1",
+        data={"CallSid": "CA777", "CallStatus": "completed"},
+    )
+    assert resp.status_code == 204
+
+    db = TestSessionLocal()
+    src = db.query(Sources).get(1)
+    assert src.verification_status is None
+    db.close()
