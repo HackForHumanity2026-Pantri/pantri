@@ -123,7 +123,7 @@ struct FoodSource: Identifiable, Codable, Equatable {
     func distance(from location: CLLocationCoordinate2D) -> Double {
         let sourceLocation = CLLocation(latitude: latitude, longitude: longitude)
         let userLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        return sourceLocation.distance(from: userLocation) / 1000.0 // km
+        return sourceLocation.distance(from: userLocation) / 1609.34 // miles
     }
 }
 

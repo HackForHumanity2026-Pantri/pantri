@@ -88,7 +88,7 @@ struct SourceCardView: View {
                 Spacer()
 
                 if let distanceKm {
-                    Text(String(format: "%.1f km", distanceKm))
+                    Text(String(format: "%.1f mi", distanceKm))
                         .font(PantriFonts.footnote)
                         .foregroundStyle(PantriColors.secondaryText)
                 }

@@ -144,7 +144,7 @@ struct MatchCardView: View {
                     Text(String(format: "%.0f%%", match.score * 100))
                         .font(PantriFonts.title3)
                         .foregroundStyle(PantriColors.green)
-                    Text(String(format: "%.1f km", match.distanceKm))
+                    Text(String(format: "%.1f mi", match.distanceKm))
                         .font(PantriFonts.caption)
                         .foregroundStyle(PantriColors.secondaryText)
                 }
@@ -166,7 +166,7 @@ struct MatchCardView: View {
         }
         .pantriCard(padding: PantriSpacing.md)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Match \(rank): \(match.source.name), \(String(format: "%.0f", match.score * 100)) percent match, \(String(format: "%.1f", match.distanceKm)) kilometers away")
+        .accessibilityLabel("Match \(rank): \(match.source.name), \(String(format: "%.0f", match.score * 100)) percent match, \(String(format: "%.1f", match.distanceKm)) miles away")
         .accessibilityHint("Tap for details")
     }
 }
@@ -200,7 +200,7 @@ struct MatchDetailSheet: View {
                         InfoRow(icon: "mappin", text: match.source.fullAddress)
                         InfoRow(icon: "phone", text: match.source.phone)
                         InfoRow(icon: "clock", text: match.source.hoursOfOperation)
-                        InfoRow(icon: "figure.walk", text: String(format: "%.1f km away", match.distanceKm))
+                        InfoRow(icon: "figure.walk", text: String(format: "%.1f mi away", match.distanceKm))
 
                         if let wait = match.source.waitTimeEstimate {
                             InfoRow(icon: "hourglass", text: "~\(wait) min wait")

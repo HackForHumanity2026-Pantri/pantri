@@ -52,7 +52,7 @@ final class MatchingEngine {
         needType: FoodType,
         urgency: Urgency
     ) -> ScoreBreakdown {
-        let distanceScore = max(0, 1.0 - (distanceKm / 20.0))
+        let distanceScore = max(0, 1.0 - (distanceKm / 12.5))
         let typeMatch: Double = source.foodTypes.contains(needType) ? 1.0 : 0.0
         let verified: Double = source.isVerified ? 1.0 : 0.0
         let capacity = source.availability.normalized
