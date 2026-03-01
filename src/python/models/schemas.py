@@ -3,11 +3,11 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-class Sources(BaseModel): 
+class Sources(BaseModel):
 	id: str
 	name: str
 	type: str
-	address: str 
+	address: str
 	state: str
 	city: str
 	lat: float
@@ -15,7 +15,6 @@ class Sources(BaseModel):
 	phone: str
 	hours_json: list[dict[str,str]]
 	types_json: list[str]
-	verified_bool: bool
 
 class Requests(BaseModel):
 	id: str
@@ -23,13 +22,13 @@ class Requests(BaseModel):
 	location: str
 	need_type: str
 	urgency: str
-	created_at: datetime 
+	created_at: datetime
 
 class Matches(BaseModel):
 	request_id: str
 	source_id: str
 	score: int
-	matched_at: datetime 
+	matched_at: datetime
 
 class Verifications(BaseModel):
 	source_id: str

@@ -1,36 +1,35 @@
-from pydantic import BaseModel
-fro
-elalqs 
+from datetime import datetime, timezone
+from sqlalchemy import Column, String, Float, Boolean, Integer, JSON, DateTime
+from get_db import Base
 
-class Sources(BaseModel): 
-	id: Column(str)
-	name: Column(str)
-	type: Column(str)
-	address: Column(str)  
-	lat: Column(float)
-	lng: Column(float)
-	phone: Column(str)
-	hours_json: Column(list[dict[str,str]])
-	types_json: Column(list[str])
-	verified_bool: Column(bool)
 
-class Requests(BaseModel):
-    __tableName = "user_requests"
-    
-	#Registration details
-    id = Column(String, primary_key=True, index=True)
-    user_contact = Column(String, nullable=True)
-    location = Column(String, nullable=False)
-    need_type = Column(String, nullable=False)
-    urgency = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
+class Sources(Base):
+    __tablename__ = "sources"
 
-	#Onboarding details
-    find_location = Column(String, nullable=True)
-    find_type = Column(String, nullable=True)
-    find_urgency = Column(String, nullable=True)
-    find_created_at = Column(DateTime, nullable=True)
-    
-	#completion details
+    id               = Column(Integer, primary_key=True, index=True)
+    name             = Column(String, nullable=False)
+    type             = Column(String)
+    address          = Column(String)
+    city             = Column(String)
+    state            = Column(String)
+    zip              = Column(String)
+    lat              = Column(Float)
+    lng              = Column(Float)
+    phone            = Column(String)
+    hours_json       = Column(JSON)
+    types_json       = Column(JSON)
+
+class Requests(Base):
+    __tablename__ = "requests"
+
+    id                = Column(String, primary_key=True, index=True)
+    user_contact      = Column(String, nullable=True)
+    location          = Column(String, nullable=False)
+    need_type         = Column(String, nullable=False)
+    urgency           = Column(String, nullable=False)
+    created_at        = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    find_location     = Column(String, nullable=True)
+    find_type         = Column(String, nullable=True)
+    find_urgency      = Column(String, nullable=True)
+    find_created_at   = Column(DateTime, nullable=True)
     completed_session = Column(Boolean, default=False)
