@@ -3,6 +3,7 @@
     "id": 1,
     "name": "Second Harvest of Silicon Valley – Curtner Center",
     "type": "Food Bank",
+    "duration": "permanent",
     "address": "750 Curtner Ave",
     "city": "San Jose",
     "state": "CA",
@@ -11,21 +12,42 @@
     "lng": -121.8863,
     "phone": "(408) 266-8866",
     "hours_json": [
-      { "day": "Mon", "open": "08:00", "close": "17:00" },
-      { "day": "Tue", "open": "08:00", "close": "17:00" },
-      { "day": "Wed", "open": "08:00", "close": "17:00" },
-      { "day": "Thu", "open": "08:00", "close": "17:00" },
-      { "day": "Fri", "open": "08:00", "close": "17:00" }
+      {
+        "day": "Mon",
+        "open": "08:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Tue",
+        "open": "08:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Wed",
+        "open": "08:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Thu",
+        "open": "08:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Fri",
+        "open": "08:00",
+        "close": "17:00"
+      }
     ],
-    "types_json": ["groceries", "fresh produce"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-28T00:00:00Z",
-    "capacity_score": 10
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
   },
   {
     "id": 2,
     "name": "Second Harvest of Silicon Valley – Cypress Center",
     "type": "Food Bank",
+    "duration": "permanent",
     "address": "4001 North First St",
     "city": "San Jose",
     "state": "CA",
@@ -34,21 +56,42 @@
     "lng": -121.9511,
     "phone": "(408) 266-8866",
     "hours_json": [
-      { "day": "Mon", "open": "08:00", "close": "17:00" },
-      { "day": "Tue", "open": "08:00", "close": "17:00" },
-      { "day": "Wed", "open": "08:00", "close": "17:00" },
-      { "day": "Thu", "open": "08:00", "close": "17:00" },
-      { "day": "Fri", "open": "08:00", "close": "17:00" }
+      {
+        "day": "Mon",
+        "open": "08:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Tue",
+        "open": "08:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Wed",
+        "open": "08:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Thu",
+        "open": "08:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Fri",
+        "open": "08:00",
+        "close": "17:00"
+      }
     ],
-    "types_json": ["groceries", "fresh produce"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-28T00:00:00Z",
-    "capacity_score": 10
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
   },
   {
     "id": 3,
     "name": "Sacred Heart Community Service",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "1381 South First St",
     "city": "San Jose",
     "state": "CA",
@@ -57,18 +100,26 @@
     "lng": -121.8756,
     "phone": "(408) 278-2160",
     "hours_json": [
-      { "day": "Tue", "open": "09:00", "close": "18:00" },
-      { "day": "Fri", "open": "09:00", "close": "12:00" }
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "18:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "12:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-28T00:00:00Z",
-    "capacity_score": 8
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 4,
     "name": "Martha's Kitchen",
     "type": "Soup Kitchen",
+    "duration": "permanent",
     "address": "311 Willow St",
     "city": "San Jose",
     "state": "CA",
@@ -77,18 +128,26 @@
     "lng": -121.8937,
     "phone": "(408) 293-6111",
     "hours_json": [
-      { "day": "Tue", "open": "16:00", "close": "17:00" },
-      { "day": "Wed", "open": "16:00", "close": "17:00" }
+      {
+        "day": "Tue",
+        "open": "16:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Wed",
+        "open": "16:00",
+        "close": "17:00"
+      }
     ],
-    "types_json": ["ready-to-eat"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-28T00:00:00Z",
-    "capacity_score": 6
+    "types_json": [
+      "ready-to-eat"
+    ]
   },
   {
     "id": 5,
     "name": "Loaves & Fishes Family Kitchen",
     "type": "Soup Kitchen",
+    "duration": "permanent",
     "address": "195 N 27th St",
     "city": "San Jose",
     "state": "CA",
@@ -97,23 +156,52 @@
     "lng": -121.8618,
     "phone": "(408) 922-9085",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "17:00" },
-      { "day": "Tue", "open": "09:00", "close": "17:00" },
-      { "day": "Wed", "open": "09:00", "close": "17:00" },
-      { "day": "Thu", "open": "09:00", "close": "17:00" },
-      { "day": "Fri", "open": "09:00", "close": "17:00" },
-      { "day": "Sat", "open": "09:00", "close": "17:00" },
-      { "day": "Sun", "open": "09:00", "close": "17:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Sat",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Sun",
+        "open": "09:00",
+        "close": "17:00"
+      }
     ],
-    "types_json": ["ready-to-eat", "groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-28T00:00:00Z",
-    "capacity_score": 9
+    "types_json": [
+      "ready-to-eat",
+      "groceries"
+    ]
   },
   {
     "id": 6,
     "name": "Salvation Army – Emmanuel House",
     "type": "Soup Kitchen",
+    "duration": "permanent",
     "address": "405 N 4th St",
     "city": "San Jose",
     "state": "CA",
@@ -122,23 +210,51 @@
     "lng": -121.8893,
     "phone": "(408) 282-1175",
     "hours_json": [
-      { "day": "Mon", "open": "07:00", "close": "19:00" },
-      { "day": "Tue", "open": "07:00", "close": "19:00" },
-      { "day": "Wed", "open": "07:00", "close": "19:00" },
-      { "day": "Thu", "open": "07:00", "close": "19:00" },
-      { "day": "Fri", "open": "07:00", "close": "19:00" },
-      { "day": "Sat", "open": "07:00", "close": "19:00" },
-      { "day": "Sun", "open": "07:00", "close": "19:00" }
+      {
+        "day": "Mon",
+        "open": "07:00",
+        "close": "19:00"
+      },
+      {
+        "day": "Tue",
+        "open": "07:00",
+        "close": "19:00"
+      },
+      {
+        "day": "Wed",
+        "open": "07:00",
+        "close": "19:00"
+      },
+      {
+        "day": "Thu",
+        "open": "07:00",
+        "close": "19:00"
+      },
+      {
+        "day": "Fri",
+        "open": "07:00",
+        "close": "19:00"
+      },
+      {
+        "day": "Sat",
+        "open": "07:00",
+        "close": "19:00"
+      },
+      {
+        "day": "Sun",
+        "open": "07:00",
+        "close": "19:00"
+      }
     ],
-    "types_json": ["ready-to-eat"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-28T00:00:00Z",
-    "capacity_score": 7
+    "types_json": [
+      "ready-to-eat"
+    ]
   },
   {
     "id": 7,
     "name": "Friendship COGIC & Community Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "2400 Alum Rock Ave",
     "city": "San Jose",
     "state": "CA",
@@ -147,17 +263,21 @@
     "lng": -121.8471,
     "phone": "(408) 258-5445",
     "hours_json": [
-      { "day": "Tue", "open": "08:30", "close": "14:00" }
+      {
+        "day": "Tue",
+        "open": "08:30",
+        "close": "14:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 4
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 8,
     "name": "Bay Area Maranatha Christian Center – Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "460 N 13th St",
     "city": "San Jose",
     "state": "CA",
@@ -166,23 +286,51 @@
     "lng": -121.8817,
     "phone": "(408) 280-7729",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "17:00" },
-      { "day": "Tue", "open": "09:00", "close": "17:00" },
-      { "day": "Wed", "open": "09:00", "close": "17:00" },
-      { "day": "Thu", "open": "09:00", "close": "17:00" },
-      { "day": "Fri", "open": "09:00", "close": "17:00" },
-      { "day": "Sat", "open": "09:00", "close": "17:00" },
-      { "day": "Sun", "open": "09:00", "close": "17:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Sat",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Sun",
+        "open": "09:00",
+        "close": "17:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 9,
     "name": "Wesley United Methodist Church Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "1376 Naglee Ave",
     "city": "San Jose",
     "state": "CA",
@@ -191,17 +339,21 @@
     "lng": -121.9043,
     "phone": "(408) 295-0367",
     "hours_json": [
-      { "day": "Tue", "open": "09:00", "close": "12:00" }
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "12:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 3
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 10,
     "name": "New Beginnings Family Services Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "1180 Lincoln Ave",
     "city": "San Jose",
     "state": "CA",
@@ -210,21 +362,41 @@
     "lng": -121.8741,
     "phone": "(669) 299-6610",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "10:00" },
-      { "day": "Mon", "open": "18:00", "close": "19:00" },
-      { "day": "Wed", "open": "09:00", "close": "10:00" },
-      { "day": "Wed", "open": "18:00", "close": "19:00" },
-      { "day": "Sat", "open": "09:00", "close": "10:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "10:00"
+      },
+      {
+        "day": "Mon",
+        "open": "18:00",
+        "close": "19:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "10:00"
+      },
+      {
+        "day": "Wed",
+        "open": "18:00",
+        "close": "19:00"
+      },
+      {
+        "day": "Sat",
+        "open": "09:00",
+        "close": "10:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-01-15T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 11,
     "name": "Portuguese Organization for Social Services & Opportunities (POSSO)",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "1614 Alum Rock Ave",
     "city": "San Jose",
     "state": "CA",
@@ -233,21 +405,42 @@
     "lng": -121.8509,
     "phone": "(408) 293-0877",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "15:30" },
-      { "day": "Tue", "open": "09:00", "close": "15:30" },
-      { "day": "Wed", "open": "09:00", "close": "15:30" },
-      { "day": "Thu", "open": "09:00", "close": "15:30" },
-      { "day": "Fri", "open": "10:00", "close": "14:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "15:30"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "15:30"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "15:30"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "15:30"
+      },
+      {
+        "day": "Fri",
+        "open": "10:00",
+        "close": "14:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-01-15T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 12,
     "name": "Cathedral of Faith – H.O.P.E. Calling Food Pantry",
     "type": "Food Pantry",
+    "duration": "popup",
+    "popup_schedule": "2nd & 4th Wed of each month",
     "address": "2315 Canoas Garden Ave",
     "city": "San Jose",
     "state": "CA",
@@ -256,17 +449,21 @@
     "lng": -121.8724,
     "phone": "(408) 979-3043",
     "hours_json": [
-      { "day": "Wed", "open": "17:30", "close": "18:30", "note": "2nd & 4th Wed of month only" }
+      {
+        "day": "Wed",
+        "open": "17:30",
+        "close": "18:30"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-03-01T00:00:00Z",
-    "capacity_score": 3
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 13,
     "name": "The Health Trust – Jerry Larson Food Basket",
     "type": "Specialized Food Pantry",
+    "duration": "permanent",
     "address": "2450 Moorpark Ave",
     "city": "San Jose",
     "state": "CA",
@@ -275,15 +472,16 @@
     "lng": -121.9387,
     "phone": "(408) 513-8700",
     "hours_json": [],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 4
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 14,
     "name": "St. Maria Goretti Catholic Church – Second Harvest Distribution",
     "type": "Distribution Site",
+    "duration": "popup",
+    "popup_schedule": "2nd & 4th Thu of each month",
     "address": "6230 Lean Ave",
     "city": "San Jose",
     "state": "CA",
@@ -292,17 +490,22 @@
     "lng": -121.8329,
     "phone": "(408) 363-2300",
     "hours_json": [
-      { "day": "Thu", "open": "10:00", "close": "12:00", "note": "2nd & 4th Thu of month only" }
+      {
+        "day": "Thu",
+        "open": "10:00",
+        "close": "12:00"
+      }
     ],
-    "types_json": ["groceries", "fresh produce"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-01-15T00:00:00Z",
-    "capacity_score": 4
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
   },
   {
     "id": 15,
     "name": "South Valley FISH Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "6031 Snell Ave",
     "city": "San Jose",
     "state": "CA",
@@ -311,17 +514,21 @@
     "lng": -121.8417,
     "phone": "(408) 669-4949",
     "hours_json": [
-      { "day": "Thu", "open": "16:30", "close": "18:00" }
+      {
+        "day": "Thu",
+        "open": "16:30",
+        "close": "18:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-01T00:00:00Z",
-    "capacity_score": 4
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 16,
     "name": "African American Community Service Agency",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "584 E Santa Clara St",
     "city": "San Jose",
     "state": "CA",
@@ -330,21 +537,41 @@
     "lng": -121.8783,
     "phone": "(408) 292-3157",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "17:00" },
-      { "day": "Tue", "open": "09:00", "close": "17:00" },
-      { "day": "Wed", "open": "09:00", "close": "17:00" },
-      { "day": "Thu", "open": "09:00", "close": "17:00" },
-      { "day": "Fri", "open": "09:00", "close": "17:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "17:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 17,
     "name": "CityTeam San Jose",
     "type": "Soup Kitchen",
+    "duration": "permanent",
     "address": "140 N 4th St",
     "city": "San Jose",
     "state": "CA",
@@ -353,30 +580,86 @@
     "lng": -121.8888,
     "phone": "(408) 232-5600",
     "hours_json": [
-      { "day": "Mon", "open": "07:00", "close": "08:00" },
-      { "day": "Mon", "open": "17:30", "close": "18:30" },
-      { "day": "Tue", "open": "07:00", "close": "08:00" },
-      { "day": "Tue", "open": "17:30", "close": "18:30" },
-      { "day": "Wed", "open": "07:00", "close": "08:00" },
-      { "day": "Wed", "open": "17:30", "close": "18:30" },
-      { "day": "Thu", "open": "07:00", "close": "08:00" },
-      { "day": "Thu", "open": "17:30", "close": "18:30" },
-      { "day": "Fri", "open": "07:00", "close": "08:00" },
-      { "day": "Fri", "open": "17:30", "close": "18:30" },
-      { "day": "Sat", "open": "07:00", "close": "08:00" },
-      { "day": "Sat", "open": "17:30", "close": "18:30" },
-      { "day": "Sun", "open": "07:00", "close": "08:00" },
-      { "day": "Sun", "open": "17:30", "close": "18:30" }
+      {
+        "day": "Mon",
+        "open": "07:00",
+        "close": "08:00"
+      },
+      {
+        "day": "Mon",
+        "open": "17:30",
+        "close": "18:30"
+      },
+      {
+        "day": "Tue",
+        "open": "07:00",
+        "close": "08:00"
+      },
+      {
+        "day": "Tue",
+        "open": "17:30",
+        "close": "18:30"
+      },
+      {
+        "day": "Wed",
+        "open": "07:00",
+        "close": "08:00"
+      },
+      {
+        "day": "Wed",
+        "open": "17:30",
+        "close": "18:30"
+      },
+      {
+        "day": "Thu",
+        "open": "07:00",
+        "close": "08:00"
+      },
+      {
+        "day": "Thu",
+        "open": "17:30",
+        "close": "18:30"
+      },
+      {
+        "day": "Fri",
+        "open": "07:00",
+        "close": "08:00"
+      },
+      {
+        "day": "Fri",
+        "open": "17:30",
+        "close": "18:30"
+      },
+      {
+        "day": "Sat",
+        "open": "07:00",
+        "close": "08:00"
+      },
+      {
+        "day": "Sat",
+        "open": "17:30",
+        "close": "18:30"
+      },
+      {
+        "day": "Sun",
+        "open": "07:00",
+        "close": "08:00"
+      },
+      {
+        "day": "Sun",
+        "open": "17:30",
+        "close": "18:30"
+      }
     ],
-    "types_json": ["ready-to-eat"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-01-15T00:00:00Z",
-    "capacity_score": 7
+    "types_json": [
+      "ready-to-eat"
+    ]
   },
   {
     "id": 18,
     "name": "Milpitas Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "70 S Milpitas Blvd",
     "city": "Milpitas",
     "state": "CA",
@@ -385,22 +668,46 @@
     "lng": -121.8996,
     "phone": "(408) 946-5564",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "13:00" },
-      { "day": "Tue", "open": "09:00", "close": "13:00" },
-      { "day": "Wed", "open": "09:00", "close": "13:00" },
-      { "day": "Thu", "open": "09:00", "close": "13:00" },
-      { "day": "Thu", "open": "18:00", "close": "20:00" },
-      { "day": "Sat", "open": "09:00", "close": "12:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Thu",
+        "open": "18:00",
+        "close": "20:00"
+      },
+      {
+        "day": "Sat",
+        "open": "09:00",
+        "close": "12:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-01-15T00:00:00Z",
-    "capacity_score": 6
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 19,
     "name": "Rahima Foundation Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "1435 Landess Ave",
     "city": "Milpitas",
     "state": "CA",
@@ -409,19 +716,31 @@
     "lng": -121.9063,
     "phone": "(408) 262-0900",
     "hours_json": [
-      { "day": "Wed", "open": "09:00", "close": "14:00" },
-      { "day": "Thu", "open": "09:00", "close": "14:00" },
-      { "day": "Sat", "open": "09:00", "close": "11:30" }
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "14:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "14:00"
+      },
+      {
+        "day": "Sat",
+        "open": "09:00",
+        "close": "11:30"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-01T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 20,
     "name": "Community Services Agency – Food & Nutrition Center",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "204 Stierlin Ct",
     "city": "Mountain View",
     "state": "CA",
@@ -430,24 +749,57 @@
     "lng": -122.0757,
     "phone": "(650) 968-0836",
     "hours_json": [
-      { "day": "Mon", "open": "10:00", "close": "12:00" },
-      { "day": "Mon", "open": "14:00", "close": "16:00" },
-      { "day": "Tue", "open": "10:00", "close": "12:00" },
-      { "day": "Tue", "open": "14:00", "close": "16:00" },
-      { "day": "Wed", "open": "14:00", "close": "16:00" },
-      { "day": "Thu", "open": "10:00", "close": "12:00" },
-      { "day": "Thu", "open": "14:00", "close": "16:00" },
-      { "day": "Fri", "open": "14:00", "close": "16:00" }
+      {
+        "day": "Mon",
+        "open": "10:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Mon",
+        "open": "14:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Tue",
+        "open": "10:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Tue",
+        "open": "14:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Wed",
+        "open": "14:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Thu",
+        "open": "10:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Thu",
+        "open": "14:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Fri",
+        "open": "14:00",
+        "close": "16:00"
+      }
     ],
-    "types_json": ["groceries", "ready-to-eat"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-01T00:00:00Z",
-    "capacity_score": 7
+    "types_json": [
+      "groceries",
+      "ready-to-eat"
+    ]
   },
   {
     "id": 21,
     "name": "Sunnyvale Community Services – Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "725 Kifer Rd",
     "city": "Sunnyvale",
     "state": "CA",
@@ -456,26 +808,66 @@
     "lng": -122.0125,
     "phone": "(408) 738-4321",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "12:00" },
-      { "day": "Mon", "open": "12:30", "close": "16:00" },
-      { "day": "Tue", "open": "09:00", "close": "12:00" },
-      { "day": "Tue", "open": "12:30", "close": "16:00" },
-      { "day": "Wed", "open": "09:00", "close": "12:00" },
-      { "day": "Wed", "open": "12:30", "close": "16:00" },
-      { "day": "Thu", "open": "09:00", "close": "12:00" },
-      { "day": "Thu", "open": "12:30", "close": "16:00" },
-      { "day": "Fri", "open": "09:00", "close": "12:00" },
-      { "day": "Fri", "open": "12:30", "close": "16:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Mon",
+        "open": "12:30",
+        "close": "16:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Tue",
+        "open": "12:30",
+        "close": "16:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Wed",
+        "open": "12:30",
+        "close": "16:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Thu",
+        "open": "12:30",
+        "close": "16:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Fri",
+        "open": "12:30",
+        "close": "16:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-02-28T00:00:00Z",
-    "capacity_score": 7
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 22,
     "name": "West Valley Community Services – Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "10104 Vista Dr",
     "city": "Cupertino",
     "state": "CA",
@@ -484,27 +876,71 @@
     "lng": -122.0326,
     "phone": "(408) 255-8033",
     "hours_json": [
-      { "day": "Mon", "open": "10:00", "close": "11:15" },
-      { "day": "Mon", "open": "13:00", "close": "16:15" },
-      { "day": "Tue", "open": "10:00", "close": "11:15" },
-      { "day": "Tue", "open": "13:00", "close": "16:15" },
-      { "day": "Wed", "open": "10:00", "close": "11:15" },
-      { "day": "Wed", "open": "13:00", "close": "16:15" },
-      { "day": "Thu", "open": "10:00", "close": "11:15" },
-      { "day": "Thu", "open": "13:00", "close": "16:15" },
-      { "day": "Thu", "open": "17:15", "close": "19:00" },
-      { "day": "Fri", "open": "10:00", "close": "11:15" },
-      { "day": "Fri", "open": "13:00", "close": "16:15" }
+      {
+        "day": "Mon",
+        "open": "10:00",
+        "close": "11:15"
+      },
+      {
+        "day": "Mon",
+        "open": "13:00",
+        "close": "16:15"
+      },
+      {
+        "day": "Tue",
+        "open": "10:00",
+        "close": "11:15"
+      },
+      {
+        "day": "Tue",
+        "open": "13:00",
+        "close": "16:15"
+      },
+      {
+        "day": "Wed",
+        "open": "10:00",
+        "close": "11:15"
+      },
+      {
+        "day": "Wed",
+        "open": "13:00",
+        "close": "16:15"
+      },
+      {
+        "day": "Thu",
+        "open": "10:00",
+        "close": "11:15"
+      },
+      {
+        "day": "Thu",
+        "open": "13:00",
+        "close": "16:15"
+      },
+      {
+        "day": "Thu",
+        "open": "17:15",
+        "close": "19:00"
+      },
+      {
+        "day": "Fri",
+        "open": "10:00",
+        "close": "11:15"
+      },
+      {
+        "day": "Fri",
+        "open": "13:00",
+        "close": "16:15"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-01-15T00:00:00Z",
-    "capacity_score": 6
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 23,
     "name": "South Palo Alto Food Closet",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "4000 Middlefield Rd",
     "city": "Palo Alto",
     "state": "CA",
@@ -513,19 +949,31 @@
     "lng": -122.1100,
     "phone": "(650) 814-5478",
     "hours_json": [
-      { "day": "Mon", "open": "10:00", "close": "14:00" },
-      { "day": "Wed", "open": "10:00", "close": "14:00" },
-      { "day": "Fri", "open": "10:00", "close": "14:00" }
+      {
+        "day": "Mon",
+        "open": "10:00",
+        "close": "14:00"
+      },
+      {
+        "day": "Wed",
+        "open": "10:00",
+        "close": "14:00"
+      },
+      {
+        "day": "Fri",
+        "open": "10:00",
+        "close": "14:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-01-15T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 24,
     "name": "LifeMoves – Palo Alto",
     "type": "Shelter Food Program",
+    "duration": "permanent",
     "address": "591 S California Ave",
     "city": "Palo Alto",
     "state": "CA",
@@ -534,21 +982,42 @@
     "lng": -122.1438,
     "phone": "(650) 853-8672",
     "hours_json": [
-      { "day": "Mon", "open": "08:00", "close": "16:00" },
-      { "day": "Tue", "open": "08:00", "close": "16:00" },
-      { "day": "Wed", "open": "08:00", "close": "16:00" },
-      { "day": "Thu", "open": "08:00", "close": "16:00" },
-      { "day": "Fri", "open": "08:00", "close": "16:00" }
+      {
+        "day": "Mon",
+        "open": "08:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Tue",
+        "open": "08:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Wed",
+        "open": "08:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Thu",
+        "open": "08:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Fri",
+        "open": "08:00",
+        "close": "16:00"
+      }
     ],
-    "types_json": ["groceries", "ready-to-eat"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries",
+      "ready-to-eat"
+    ]
   },
   {
     "id": 25,
     "name": "River of Life Foundation Food Pantry",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "2090 Benton St",
     "city": "Santa Clara",
     "state": "CA",
@@ -557,19 +1026,31 @@
     "lng": -121.9839,
     "phone": "(408) 295-2326",
     "hours_json": [
-      { "day": "Tue", "open": "10:00", "close": "13:00" },
-      { "day": "Thu", "open": "10:00", "close": "13:00" },
-      { "day": "Fri", "open": "14:00", "close": "16:00" }
+      {
+        "day": "Tue",
+        "open": "10:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Thu",
+        "open": "10:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Fri",
+        "open": "14:00",
+        "close": "16:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 4
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 26,
     "name": "Mission College Food Bank",
     "type": "Campus Food Pantry",
+    "duration": "permanent",
     "address": "3000 Mission College Blvd",
     "city": "Santa Clara",
     "state": "CA",
@@ -578,17 +1059,21 @@
     "lng": -121.9797,
     "phone": "(408) 262-6006",
     "hours_json": [
-      { "day": "Tue", "open": "10:00", "close": "12:00" }
+      {
+        "day": "Tue",
+        "open": "10:00",
+        "close": "12:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": true,
-    "last_verified_ts": "2026-01-15T00:00:00Z",
-    "capacity_score": 4
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 27,
     "name": "South County Community Services",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "8 Trading Post Way",
     "city": "Gilroy",
     "state": "CA",
@@ -597,26 +1082,66 @@
     "lng": -121.5683,
     "phone": "(408) 842-7138",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "11:30" },
-      { "day": "Mon", "open": "13:00", "close": "16:00" },
-      { "day": "Tue", "open": "09:00", "close": "11:30" },
-      { "day": "Tue", "open": "13:00", "close": "16:00" },
-      { "day": "Wed", "open": "09:00", "close": "11:30" },
-      { "day": "Wed", "open": "13:00", "close": "16:00" },
-      { "day": "Thu", "open": "09:00", "close": "11:30" },
-      { "day": "Thu", "open": "13:00", "close": "16:00" },
-      { "day": "Fri", "open": "09:00", "close": "11:30" },
-      { "day": "Fri", "open": "13:00", "close": "16:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "11:30"
+      },
+      {
+        "day": "Mon",
+        "open": "13:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "11:30"
+      },
+      {
+        "day": "Tue",
+        "open": "13:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "11:30"
+      },
+      {
+        "day": "Wed",
+        "open": "13:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "11:30"
+      },
+      {
+        "day": "Thu",
+        "open": "13:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "11:30"
+      },
+      {
+        "day": "Fri",
+        "open": "13:00",
+        "close": "16:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 28,
     "name": "Gilroy Senior Center – Food Distribution",
     "type": "Senior Food Program",
+    "duration": "permanent",
     "address": "7371 Hanna St",
     "city": "Gilroy",
     "state": "CA",
@@ -625,15 +1150,17 @@
     "lng": -121.5699,
     "phone": "(408) 846-0343",
     "hours_json": [],
-    "types_json": ["groceries", "ready-to-eat"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 4
+    "types_json": [
+      "groceries",
+      "ready-to-eat"
+    ]
   },
   {
     "id": 29,
     "name": "Morgan Hill Community & Cultural Center – Food Distribution",
     "type": "Distribution Site",
+    "duration": "popup",
+    "popup_schedule": "Periodic distributions, call to confirm",
     "address": "17000 Monterey Rd",
     "city": "Morgan Hill",
     "state": "CA",
@@ -642,15 +1169,15 @@
     "lng": -121.6543,
     "phone": "(408) 779-7278",
     "hours_json": [],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-06-01T00:00:00Z",
-    "capacity_score": 4
+    "types_json": [
+      "groceries"
+    ]
   },
   {
     "id": 30,
     "name": "Our Daily Bread – Sunnyvale",
     "type": "Food Pantry",
+    "duration": "permanent",
     "address": "592 N Murphy Ave",
     "city": "Sunnyvale",
     "state": "CA",
@@ -659,15 +1186,34 @@
     "lng": -122.0297,
     "phone": "(408) 720-9709",
     "hours_json": [
-      { "day": "Mon", "open": "09:00", "close": "12:00" },
-      { "day": "Tue", "open": "09:00", "close": "12:00" },
-      { "day": "Wed", "open": "09:00", "close": "12:00" },
-      { "day": "Thu", "open": "09:00", "close": "12:00" },
-      { "day": "Fri", "open": "09:00", "close": "12:00" }
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "12:00"
+      }
     ],
-    "types_json": ["groceries"],
-    "verified_bool": false,
-    "last_verified_ts": "2025-09-01T00:00:00Z",
-    "capacity_score": 5
+    "types_json": [
+      "groceries"
+    ]
   }
 ]
