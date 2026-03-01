@@ -43,4 +43,5 @@ In a .env folder put this then run main.py
  POSTGRES_HOST="localhost"
  POSTGRES_DB="pantri"
 
+
 ```
