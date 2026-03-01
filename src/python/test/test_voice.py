@@ -17,6 +17,7 @@ os.environ["DATABASE_URL"] = "sqlite:///test_pantri.db"
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import pytest
+from pydantic import ValidationError
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -88,9 +89,9 @@ def test_change_schema_valid():
 
 
 def test_change_schema_confidence_bounds():
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         Change(field="phone", new_value="x", confidence=1.5)
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         Change(field="phone", new_value="x", confidence=-0.1)
 
 
@@ -183,7 +184,7 @@ def test_apply_empty_changes():
 
 def test_disallowed_field_rejected_by_schema():
     """Fields not in ALLOWED_FIELDS should be rejected at the Pydantic level."""
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         Change(field="lat", new_value=0.0, confidence=0.99)
 
 
