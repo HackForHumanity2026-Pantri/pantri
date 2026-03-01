@@ -22,6 +22,7 @@ class Sources(Base):
     is_accessible = Column(Boolean, nullable=True, default=None)
     availability = Column(String)
     excess_food  = Column(Boolean)
+    notes        = Column(String, nullable=True)
 
 class Restaurants(Base):
     __tablename__ = "restaurants"
