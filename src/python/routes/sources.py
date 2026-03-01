@@ -1,9 +1,10 @@
-from typing import Optional
+import uuid
+from typing import Optional, List
 from math import radians, cos, sin, asin, sqrt
 from datetime import datetime
 
 import requests as http_requests
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from models.models import Sources, Restaurants, Buses
@@ -50,11 +51,97 @@ def source_to_dict(source):
     return {k: v for k, v in source.__dict__.items() if not k.startswith("_")}
 
 
-@router.get("/sources")
-async def get_sources(db: Session = Depends(get_db)):
-    return db.query(Sources).all()
+def format_hours_string(hours_json: list) -> str:
+    """Convert hours_json array to a human-readable string."""
+    if not hours_json:
+        return ""
+    parts = []
+    for entry in hours_json:
+        day = entry.get("day", "")
+        open_t = entry.get("open", "")
+        close_t = entry.get("close", "")
+        parts.append(f"{day} {open_t}-{close_t}")
+    return ", ".join(parts)
 
-'''TODO: Nothing is returned, fix the search'''
+
+def source_to_api_response(source, user_lat=None, user_lng=None):
+    """Convert a DB source model to the JSON format expected by the iOS app."""
+    source_uuid = str(uuid.uuid5(uuid.NAMESPACE_OID, f"pantri-source-{source.id}"))
+    open_now = is_open_now(source.hours_json) if source.hours_json else True
+    hours_str = format_hours_string(source.hours_json) if source.hours_json else ""
+
+    food_types = []
+    if source.types_json:
+        for t in source.types_json:
+            lower = t.lower()
+            if "groceries" in lower or "produce" in lower or "fresh" in lower:
+                food_types.append("Groceries")
+            elif "cooked" in lower or "meal" in lower or "restaurant" in lower:
+                food_types.append("Cooked Meals")
+        food_types = list(dict.fromkeys(food_types))
+
+    source_type = "Food Bank"
+    if source.type:
+        st = source.type.lower()
+        if "restaurant" in st:
+            source_type = "Restaurant"
+        elif "pop" in st:
+            source_type = "Pop-up"
+
+    distance_km = None
+    if user_lat and user_lng and source.lat and source.lng:
+        distance_km = round(haversine(user_lat, user_lng, float(source.lat), float(source.lng)), 2)
+
+    return {
+        "id": source_uuid,
+        "name": source.name or "",
+        "phone": source.phone or "",
+        "address": source.address or "",
+        "latitude": float(source.lat) if source.lat else 0.0,
+        "longitude": float(source.lng) if source.lng else 0.0,
+        "sourceType": source_type,
+        "foodTypes": food_types if food_types else ["Groceries"],
+        "hoursOfOperation": hours_str,
+        "duration": source.duration.capitalize() if source.duration else "Permanent",
+        "publicTransitAccessible": bool(source.is_accessible) if source.is_accessible is not None else False,
+        "availability": (source.availability or "Medium").capitalize(),
+        "hasExcessFood": bool(source.excess_food) if source.excess_food is not None else False,
+        "isVerified": True,
+        "isOpen": open_now,
+        "lastVerified": None,
+        "waitTimeEstimate": None,
+        "distance_km": distance_km,
+    }
+
+
+@router.get("/sources")
+async def get_sources(
+    lat: Optional[float] = None,
+    lng: Optional[float] = None,
+    type: Optional[str] = None,
+    openNow: Optional[bool] = None,
+    db: Session = Depends(get_db),
+):
+    sources = db.query(Sources).all()
+
+    if type:
+        normalized = type.lower()
+        sources = [
+            s for s in sources
+            if s.types_json and any(normalized in t.lower() for t in s.types_json)
+        ]
+
+    results = [source_to_api_response(s, lat, lng) for s in sources]
+
+    if openNow:
+        results = [r for r in results if r["isOpen"]]
+
+    if lat is not None and lng is not None:
+        results.sort(key=lambda x: (x["distance_km"] is None, x["distance_km"] or 0))
+
+    return results
+
+
 @router.get("/sources/search")
 async def search_sources(
     food_type: str,
@@ -101,12 +188,10 @@ async def search_sources(
 
     results = []
     for source in sources:
-        entry = {**source_to_dict(source), "distance_km": None}
+        entry = source_to_api_response(source, lat, lng)
 
-        if lat is not None and lng is not None and source.lat is not None and source.lng is not None:
-            dist = round(haversine(lat, lng, float(source.lat), float(source.lng)), 2)
-            entry["distance_km"] = dist
-            if limit is not None and dist >= limit:
+        if lat is not None and lng is not None and entry["distance_km"] is not None:
+            if limit is not None and entry["distance_km"] >= limit:
                 continue
 
         results.append(entry)
@@ -116,7 +201,6 @@ async def search_sources(
 
 @router.post("/sources", status_code=201)
 def create_source(body: SourceCreate, db: Session = Depends(get_db)):
-    # Auto-geocode lat/lng from address if not already in DB
     lat, lng = None, None
     if body.address:
         lat, lng = geocode_address(body.address)
@@ -140,7 +224,7 @@ def create_source(body: SourceCreate, db: Session = Depends(get_db)):
     db.add(source)
     db.commit()
     db.refresh(source)
-    return source_to_dict(source)
+    return source_to_api_response(source)
 
 
 @router.post("/restaurants", status_code=201)
