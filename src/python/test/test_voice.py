@@ -191,7 +191,7 @@ def test_disallowed_field_rejected_by_schema():
 def test_allowed_fields_constant():
     """ALLOWED_FIELDS should contain exactly the expected field names."""
     expected = {"hours", "phone", "address", "food_type",
-                "isAccessibleViaPublicTransport", "notes", "wait_time"}
+                "isAccessibleViaPublicTransport", "wait_time"}
     assert ALLOWED_FIELDS == expected
 
 
@@ -287,7 +287,7 @@ def test_prompt_requires_json_only():
 def test_prompt_allowed_fields():
     """All required fields must be listed in the system prompt."""
     for field in ("hours", "phone", "address", "food_type",
-                  "isAccessibleViaPublicTransport", "notes", "wait_time"):
+                  "isAccessibleViaPublicTransport", "wait_time"):
         assert field in SYSTEM_PROMPT, f"Missing field '{field}' in SYSTEM_PROMPT"
 
 

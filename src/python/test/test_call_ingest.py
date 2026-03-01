@@ -121,7 +121,7 @@ def test_proposed_change_confidence_bounds():
 
 def test_allowed_fields_constant():
     expected = {"hours", "phone", "address", "food_type",
-                "isAccessibleViaPublicTransport", "notes", "wait_time"}
+                "isAccessibleViaPublicTransport", "wait_time"}
     assert ALLOWED_FIELDS == expected
 
 

@@ -40,7 +40,6 @@ ALLOWED FIELDS (use only these names):
   address        – street address
   food_type      – types of food provided (string or list)
   isAccessibleViaPublicTransport – boolean, true/false
-  notes          – any other relevant info mentioned
   wait_time      – typical wait time for clients
 
 RULES:
