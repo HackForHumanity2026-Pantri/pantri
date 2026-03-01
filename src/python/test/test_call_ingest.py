@@ -354,4 +354,4 @@ def test_ollama_client_prompt_includes_source_id():
 def test_ollama_client_prompt_requires_json():
     from services.ollama_client import PROMPT_TEMPLATE
     assert "valid JSON" in PROMPT_TEMPLATE
-    assert "no markdown" in PROMPT_TEMPLATE.lower() or "No markdown" in PROMPT_TEMPLATE
+    assert "no markdown" in PROMPT_TEMPLATE.lower()
