@@ -1,12 +1,18 @@
 # Pantri
 # AI will document...
 
-### Make sure you have a postgres account
-In a .env folder put this then run main.py
+### To set up backend
+Create a venv with
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+In a .env folder put this:
  POSTGRES_PASSWORD=""
  POSTGRES_USER=""
  POSTGRES_HOST="localhost"
  POSTGRES_DB="pantri"
+
+ Run main.py 
  
 To get your changes into the `main` branch, follow these steps:
 
