@@ -20,8 +20,8 @@ import os
 from typing import Optional
 
 import httpx
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request
-from fastapi.responses import Response
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPException
+from fastapi.responses import Response, JSONResponse
 
 logger = logging.getLogger(__name__)
 
@@ -259,32 +259,35 @@ async def initiate_outbound_call(body: OutboundCallRequest):
 
     Twilio will call the destination, then POST to our ``/twilio/voice/outbound``
     webhook which responds with TwiML to start the media stream.
+    The source_id is passed as a query parameter on the webhook URL so the
+    media-stream handler can associate the call with the correct source.
     """
     if not all([TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER]):
-        return {"error": "Twilio credentials not configured"}, 500
+        raise HTTPException(status_code=500, detail="Twilio credentials not configured")
 
     try:
         from twilio.rest import Client  # type: ignore
 
         client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-        webhook_url = f"{PUBLIC_URL}/twilio/voice/outbound"
+        webhook_url = f"{PUBLIC_URL}/twilio/voice/outbound?source_id={body.source_id}"
 
         call = client.calls.create(
             to=body.to,
             from_=TWILIO_PHONE_NUMBER,
             url=webhook_url,
             status_callback=f"{PUBLIC_URL}/twilio/call-status",
-            # Pass source_id so the media stream handler knows which source
-            # this call is for
+            status_callback_method="POST",
         )
         logger.info("Outbound call initiated: %s → %s (SID: %s)", TWILIO_PHONE_NUMBER, body.to, call.sid)
         return {"call_sid": call.sid, "status": call.status}
     except ImportError:
         logger.error("twilio package not installed")
-        return {"error": "twilio package not installed"}
+        raise HTTPException(status_code=500, detail="twilio package not installed")
+    except HTTPException:
+        raise
     except Exception as exc:
         logger.error("Failed to initiate call: %s", exc)
-        return {"error": str(exc)}
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
 @router.post("/call-status")
