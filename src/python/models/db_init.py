@@ -41,74 +41,72 @@ def init_db(db: Session):
         print("Buses table does not exist, skipping initialization.")
         return
 
-    # --- Skip if already seeded ---
-    if db.query(Sources).first():
-        print("Sources table already has data, skipping initialization.")
-        return
-    if db.query(Restaurants).first():
-        print("Restaurants table already has data, skipping initialization.")
-        return
-    if db.query(Buses).first():
-        print("Buses table already has data, skipping initialization.")
-        return
-
     print("Seeding database...")
 
     # --- Seed SOURCES (Food Banks) ---
-    seed_from_json(
-        db,
-        Sources,
-        "json_files/food_banks.json",
-        mapping={
-            "id": "id",
-            "name": "name",
-            "type": "type",
-            "duration": "duration",
-            "address": "address",
-            "state": "state",
-            "city": "city",
-            "zip": "zip",
-            "lat": "lat",
-            "lng": "lng",
-            "phone": "phone",
-            "hours_json": "hours_json",
-            "types_json": "types_json",
-        },
-    )
+    if db.query(Sources).first():
+        print("Sources table already has data, skipping.")
+    else:
+        seed_from_json(
+            db,
+            Sources,
+            "json_files/food_banks.json",
+            mapping={
+                "id": "id",
+                "name": "name",
+                "type": "type",
+                "duration": "duration",
+                "address": "address",
+                "state": "state",
+                "city": "city",
+                "zip": "zip",
+                "lat": "lat",
+                "lng": "lng",
+                "phone": "phone",
+                "hours_json": "hours_json",
+                "types_json": "types_json",
+            },
+        )
 
     # --- Seed RESTAURANTS ---
-    seed_from_json(
-        db,
-        Restaurants,
-        "json_files/rest.json",
-        mapping={
-            "id": "id",
-            "name": "name",
-            "type": "type",
-            "duration": "duration",
-            "address": "address",
-            "state": "state",
-            "city": "city",
-            "zip": "zip",
-            "lat": "lat",
-            "lng": "lng",
-            "phone": "phone",
-            "hours_json": "hours_json",
-            "types_json": "types_json",
-        },
-    )
+    if db.query(Restaurants).first():
+        print("Restaurants table already has data, skipping.")
+    else:
+        seed_from_json(
+            db,
+            Restaurants,
+            "json_files/rest.json",
+            mapping={
+                "id": "id",
+                "name": "name",
+                "type": "type",
+                "duration": "duration",
+                "address": "address",
+                "state": "state",
+                "city": "city",
+                "zip": "zip",
+                "lat": "lat",
+                "lng": "lng",
+                "phone": "phone",
+                "hours_json": "hours_json",
+                "types_json": "types_json",
+            },
+        )
 
     # --- Seed BUSES ---
-    seed_from_json(
-        db,
-        Buses,
-        "json_files/buses.json",
-        mapping={
-            "id": "id",
-            "name": "name",
-            "lat": "lat",
-            "lng": "lon",
-        },
-    )
+    if db.query(Buses).first():
+        print("Buses table already has data, skipping.")
+    else:
+        seed_from_json(
+            db,
+            Buses,
+            "json_files/buses.json",
+            mapping={
+                "id": "id",
+                "name": "name",
+                "lat": "lat",
+                "lng": "lon",
+            },
+        )
 
     print("Database seeding complete.")
