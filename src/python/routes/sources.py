@@ -13,11 +13,12 @@ async def get_sources(db: Session = Depends(get_db)):
     sources = db.query(Sources).all()
     return sources
 
+# TODO: Need to fix
 @router.get("/sources_closest")
 async def get_sources_closest(my_lat: float, my_long: float, db: Session = Depends(get_db)):
     sources = db.query(Sources).all()
     results = [
-        SourceWithDistance(**source.__dict__, distance_km = haversine(my_lat, my_long, float(source.lat), float(source.lng)))
+        SourceWithDistance(**{k: v for k, v in source.__dict__.items() if not k.startswith('_')}, distance_km = haversine(my_lat, my_long, float(source.lat), float(source.lng)))
         for source in sources
     ]
     results.sort(key = lambda x: x.distance_km)
