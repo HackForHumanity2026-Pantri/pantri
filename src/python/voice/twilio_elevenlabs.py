@@ -17,14 +17,16 @@ import asyncio
 import json
 import logging
 import os
+from datetime import datetime, timezone
 from typing import Optional
 
 import httpx
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPException
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPException, Depends
 from fastapi.responses import Response, JSONResponse
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
@@ -67,14 +69,23 @@ def _get_elevenlabs_signed_url() -> Optional[str]:
         return None
 
 
-def _twiml_stream_response() -> str:
-    """Return TwiML that starts a bi-directional media stream."""
+def _twiml_stream_response(source_id: Optional[int] = None) -> str:
+    """Return TwiML that starts a bi-directional media stream.
+
+    When *source_id* is provided it is passed as a custom ``<Parameter>``
+    so the WebSocket handler can associate the stream with a food-bank record.
+    """
     ws_url = PUBLIC_URL.replace("https://", "wss://").replace("http://", "ws://")
+    param_tag = ""
+    if source_id is not None:
+        param_tag = f'      <Parameter name="source_id" value="{source_id}" />'
     return (
         '<?xml version="1.0" encoding="UTF-8"?>'
         "<Response>"
         "  <Connect>"
-        f'    <Stream url="{ws_url}/twilio/media-stream" />'
+        f'    <Stream url="{ws_url}/twilio/media-stream">'
+        f"{param_tag}"
+        "    </Stream>"
         "  </Connect>"
         "</Response>"
     )
@@ -90,8 +101,13 @@ async def twilio_voice_outbound(request: Request):
     When Twilio connects the outbound call, it POSTs here.
     We respond with TwiML that opens a bi-directional media stream
     back to our ``/twilio/media-stream`` WebSocket endpoint.
+    The ``source_id`` query parameter (set when the call was created)
+    is forwarded as a ``<Parameter>`` inside the ``<Stream>`` tag so
+    the WebSocket handler can associate the call with a food-bank record.
     """
-    return Response(content=_twiml_stream_response(), media_type="application/xml")
+    source_id = request.query_params.get("source_id")
+    sid = int(source_id) if source_id else None
+    return Response(content=_twiml_stream_response(sid), media_type="application/xml")
 
 
 @router.post("/voice/inbound")
@@ -249,7 +265,11 @@ async def _forward_transcript(source_id: int, transcript: str):
 
 # ── Outbound Call Trigger ──────────────────────────────────────────────
 
-from pydantic import BaseModel
+from get_db import get_db
+from models.models import Sources
+
+MAX_CALL_RETRIES = int(os.getenv("MAX_CALL_RETRIES", "3"))
+CALL_RETRY_DELAY = int(os.getenv("CALL_RETRY_DELAY", "5"))  # seconds
 
 
 class OutboundCallRequest(BaseModel):
@@ -258,12 +278,25 @@ class OutboundCallRequest(BaseModel):
     source_id: int  # food-bank source ID to verify
 
 
+def _mark_verification_failed(db: Session, source_id: int) -> None:
+    """Set verification_status='verification_failed' with a timestamp."""
+    source = db.query(Sources).filter(Sources.id == source_id).first()
+    if source:
+        source.verification_status = "verification_failed"
+        source.verification_failed_at = datetime.now(timezone.utc)
+        db.commit()
+        logger.info("Marked source %s as verification_failed", source_id)
+
+
 @router.post("/call/outbound")
-async def initiate_outbound_call(body: OutboundCallRequest):
+async def initiate_outbound_call(
+    body: OutboundCallRequest,
+    db: Session = Depends(get_db),
+):
     """Initiate an outbound call via Twilio to the given number.
 
-    Twilio will call the destination, then POST to our ``/twilio/voice/outbound``
-    webhook which responds with TwiML to start the media stream.
+    Retries up to ``MAX_CALL_RETRIES`` times if the call fails.
+    On exhaustion the food-bank record is marked *verification_failed*.
     The source_id is passed as a query parameter on the webhook URL so the
     media-stream handler can associate the call with the correct source.
     """
@@ -272,34 +305,91 @@ async def initiate_outbound_call(body: OutboundCallRequest):
 
     try:
         from twilio.rest import Client  # type: ignore
-
-        client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-        webhook_url = f"{PUBLIC_URL}/twilio/voice/outbound?source_id={body.source_id}"
-
-        call = client.calls.create(
-            to=body.to,
-            from_=TWILIO_PHONE_NUMBER,
-            url=webhook_url,
-            status_callback=f"{PUBLIC_URL}/twilio/call-status",
-            status_callback_method="POST",
-        )
-        logger.info("Outbound call initiated: %s → %s (SID: %s)", TWILIO_PHONE_NUMBER, body.to, call.sid)
-        return {"call_sid": call.sid, "status": call.status}
     except ImportError:
         logger.error("twilio package not installed")
         raise HTTPException(status_code=500, detail="twilio package not installed")
-    except HTTPException:
-        raise
-    except Exception as exc:
-        logger.error("Failed to initiate call: %s", exc)
-        raise HTTPException(status_code=500, detail=str(exc))
+
+    client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    webhook_url = f"{PUBLIC_URL}/twilio/voice/outbound?source_id={body.source_id}"
+
+    last_error: Optional[Exception] = None
+    for attempt in range(1, MAX_CALL_RETRIES + 1):
+        try:
+            call = client.calls.create(
+                to=body.to,
+                from_=TWILIO_PHONE_NUMBER,
+                url=webhook_url,
+                status_callback=f"{PUBLIC_URL}/twilio/call-status?source_id={body.source_id}",
+                status_callback_method="POST",
+            )
+            logger.info(
+                "Outbound call initiated (attempt %d): %s → %s (SID: %s)",
+                attempt, TWILIO_PHONE_NUMBER, body.to, call.sid,
+            )
+            return {"call_sid": call.sid, "status": call.status}
+        except Exception as exc:
+            last_error = exc
+            logger.warning("Call attempt %d/%d failed: %s", attempt, MAX_CALL_RETRIES, exc)
+            if attempt < MAX_CALL_RETRIES:
+                await asyncio.sleep(CALL_RETRY_DELAY * attempt)
+
+    # All retries exhausted — mark the food-bank record as failed.
+    _mark_verification_failed(db, body.source_id)
+    logger.error("Call failed after %d attempts: %s", MAX_CALL_RETRIES, last_error)
+    raise HTTPException(status_code=502, detail=f"Call failed after {MAX_CALL_RETRIES} attempts")
 
 
 @router.post("/call-status")
-async def call_status_callback(request: Request):
-    """Receive Twilio call status updates (ringing, in-progress, completed, etc.)."""
+async def call_status_callback(request: Request, db: Session = Depends(get_db)):
+    """Receive Twilio call status updates (ringing, in-progress, completed, etc.).
+
+    If the terminal status indicates failure (busy, no-answer, failed, canceled)
+    the food-bank record is marked as *verification_failed*.
+    """
     form = await request.form()
     call_sid = form.get("CallSid", "")
     call_status = form.get("CallStatus", "")
-    logger.info("Call status update: SID=%s Status=%s", call_sid, call_status)
+    source_id_raw = request.query_params.get("source_id")
+    logger.info("Call status update: SID=%s Status=%s source_id=%s", call_sid, call_status, source_id_raw)
+
+    failed_statuses = {"busy", "no-answer", "failed", "canceled"}
+    if call_status in failed_statuses and source_id_raw:
+        try:
+            _mark_verification_failed(db, int(source_id_raw))
+        except (ValueError, TypeError):
+            logger.warning("Invalid source_id in call-status callback: %s", source_id_raw)
+
     return Response(status_code=204)
+
+
+# ── Demo Mode ──────────────────────────────────────────────────────────
+
+
+class DemoIngestRequest(BaseModel):
+    """Request body for demo mode — paste a transcript instead of calling."""
+    source_id: int
+    transcript: str
+
+
+@router.post("/demo/ingest")
+async def demo_ingest(body: DemoIngestRequest):
+    """Demo mode: accept a pasted transcript and forward it to /ingest_call.
+
+    This bypasses Twilio entirely — useful for testing the extraction
+    pipeline without making a real phone call.
+    """
+    logger.info("Demo ingest for source %s (%d chars)", body.source_id, len(body.transcript))
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(
+                INGEST_CALL_URL,
+                json={
+                    "source_id": body.source_id,
+                    "transcript": body.transcript,
+                },
+                timeout=30,
+            )
+            return JSONResponse(content=resp.json(), status_code=resp.status_code)
+    except Exception as exc:
+        logger.error("Demo ingest failed: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))

@@ -35,6 +35,8 @@ class AuditLog(Base):
     new_value = Column(String, nullable=True)
     confidence = Column(Float, nullable=False)
     applied = Column(Boolean, default=True)
+    raw_transcript = Column(String, nullable=True)
+    extracted_json = Column(JSON, nullable=True)
     created_at = Column(
         DateTime, default=lambda: datetime.now(timezone.utc)
     )

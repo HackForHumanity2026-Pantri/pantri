@@ -66,6 +66,7 @@ def apply_changes(
 
     if all_confident:
         try:
+            extracted_json = [c.model_dump() for c in change_req.changes]
             for change in change_req.changes:
                 # Resolve LLM field name → DB column via FIELD_MAP
                 col_name = FIELD_MAP.get(change.field)
@@ -84,6 +85,8 @@ def apply_changes(
                     new_value=json.dumps(change.new_value) if change.new_value is not None else None,
                     confidence=change.confidence,
                     applied=True,
+                    raw_transcript=transcript or None,
+                    extracted_json=extracted_json,
                 ))
 
             db.commit()
