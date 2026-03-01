@@ -3,7 +3,7 @@ import Foundation
 // MARK: - API Client
 // Switchable between Mock (demo) and Live modes.
 // In demo mode, all calls resolve against the local MockDataStore.
-// In live mode, calls would hit the REST endpoints.
+// In live mode, calls hit the Python FastAPI backend endpoints.
 
 enum APIMode {
     case mock
@@ -15,7 +15,7 @@ final class APIClient {
     static let shared = APIClient()
 
     var mode: APIMode = .mock
-    var baseURL: String = "https://api.pantri.app/v1"
+    var baseURL: String = "http://127.0.0.1:8000"
 
     private let store = MockDataStore.shared
 
@@ -42,17 +42,22 @@ final class APIClient {
             return results
 
         case .live:
-            var urlString = "\(baseURL)/sources?"
-            if let lat = latitude { urlString += "lat=\(lat)&" }
-            if let lng = longitude { urlString += "lng=\(lng)&" }
-            if let type { urlString += "type=\(type.rawValue)&" }
-            if let openNow { urlString += "openNow=\(openNow)&" }
+            var components = URLComponents(string: "\(baseURL)/sources")
+            var queryItems: [URLQueryItem] = []
+            if let lat = latitude { queryItems.append(URLQueryItem(name: "lat", value: String(lat))) }
+            if let lng = longitude { queryItems.append(URLQueryItem(name: "lng", value: String(lng))) }
+            if let type { queryItems.append(URLQueryItem(name: "type", value: type.rawValue)) }
+            if let openNow { queryItems.append(URLQueryItem(name: "openNow", value: String(openNow))) }
+            if !queryItems.isEmpty { components?.queryItems = queryItems }
 
-            guard let url = URL(string: urlString) else {
+            guard let url = components?.url else {
                 throw APIError.invalidURL
             }
-            let (data, _) = try await URLSession.shared.data(from: url)
-            return try JSONDecoder().decode([FoodSource].self, from: data)
+            let (data, response) = try await URLSession.shared.data(from: url)
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+                throw APIError.serverError(httpResponse.statusCode)
+            }
+            return try Self.decodeSourceArray(from: data)
         }
     }
 
@@ -69,8 +74,22 @@ final class APIClient {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = try JSONEncoder().encode(source)
-            _ = try await URLSession.shared.data(for: request)
+
+            let payload = CreateSourcePayload(
+                name: source.name,
+                phone: source.phone.isEmpty ? nil : source.phone,
+                address: source.address.isEmpty ? nil : source.address,
+                types_json: source.foodTypes.map { $0.rawValue.lowercased() },
+                duration: source.duration.rawValue.lowercased(),
+                is_accessible: source.publicTransitAccessible,
+                availability: source.availability.rawValue.lowercased(),
+                excess_food: source.hasExcessFood
+            )
+            request.httpBody = try JSONEncoder().encode(payload)
+            let (_, response) = try await URLSession.shared.data(for: request)
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+                throw APIError.serverError(httpResponse.statusCode)
+            }
         }
     }
 
@@ -86,7 +105,10 @@ final class APIClient {
             }
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            _ = try await URLSession.shared.data(for: request)
+            let (_, response) = try await URLSession.shared.data(for: request)
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+                throw APIError.serverError(httpResponse.statusCode)
+            }
         }
     }
 
@@ -105,11 +127,19 @@ final class APIClient {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            let body: [String: Any] = ["message": message]
-            request.httpBody = try JSONSerialization.data(withJSONObject: body)
-            let (data, _) = try await URLSession.shared.data(for: request)
-            let response = try JSONDecoder().decode([String: String].self, from: data)
-            return response["reply"] ?? "Sorry, I couldn't understand that."
+
+            var payload: [String: Any] = ["message": message]
+            if let ctx = context {
+                payload["latitude"] = ctx.latitude
+                payload["longitude"] = ctx.longitude
+            }
+            request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+            let (data, response) = try await URLSession.shared.data(for: request)
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+                throw APIError.serverError(httpResponse.statusCode)
+            }
+            let decoded = try JSONDecoder().decode([String: String].self, from: data)
+            return decoded["reply"] ?? "Sorry, I couldn't understand that."
         }
     }
 
@@ -130,8 +160,95 @@ final class APIClient {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             let payload: [String: String] = ["to": phone, "body": body]
             request.httpBody = try JSONEncoder().encode(payload)
-            _ = try await URLSession.shared.data(for: request)
+            let (_, response) = try await URLSession.shared.data(for: request)
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+                throw APIError.serverError(httpResponse.statusCode)
+            }
         }
+    }
+
+    // MARK: - Response Decoding
+
+    /// Decodes backend JSON array into [FoodSource], handling field name mapping.
+    private static func decodeSourceArray(from data: Data) throws -> [FoodSource] {
+        guard let jsonArray = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            throw APIError.decodingError
+        }
+        return jsonArray.compactMap { Self.parseFoodSource(from: $0) }
+    }
+
+    /// Parses a single backend JSON dict into a FoodSource, mapping field names.
+    private static func parseFoodSource(from dict: [String: Any]) -> FoodSource? {
+        guard let name = dict["name"] as? String else { return nil }
+
+        let id: UUID
+        if let idString = dict["id"] as? String, let parsed = UUID(uuidString: idString) {
+            id = parsed
+        } else {
+            id = UUID()
+        }
+
+        let phone = dict["phone"] as? String ?? ""
+        let address = dict["address"] as? String ?? ""
+        let latitude = dict["latitude"] as? Double ?? 0.0
+        let longitude = dict["longitude"] as? Double ?? 0.0
+
+        let sourceType: FoodSourceType
+        if let st = dict["sourceType"] as? String {
+            sourceType = FoodSourceType(rawValue: st) ?? .foodBank
+        } else {
+            sourceType = .foodBank
+        }
+
+        let foodTypes: [FoodType]
+        if let types = dict["foodTypes"] as? [String] {
+            foodTypes = types.compactMap { FoodType(rawValue: $0) }
+        } else {
+            foodTypes = [.groceries]
+        }
+
+        let hoursOfOperation = dict["hoursOfOperation"] as? String ?? ""
+
+        let duration: Duration
+        if let d = dict["duration"] as? String {
+            duration = Duration(rawValue: d) ?? .permanent
+        } else {
+            duration = .permanent
+        }
+
+        let publicTransitAccessible = dict["publicTransitAccessible"] as? Bool ?? false
+
+        let availability: Availability
+        if let a = dict["availability"] as? String {
+            availability = Availability(rawValue: a) ?? .medium
+        } else {
+            availability = .medium
+        }
+
+        let hasExcessFood = dict["hasExcessFood"] as? Bool ?? false
+        let isVerified = dict["isVerified"] as? Bool ?? false
+        let isOpen = dict["isOpen"] as? Bool ?? true
+        let waitTimeEstimate = dict["waitTimeEstimate"] as? Int
+
+        return FoodSource(
+            id: id,
+            name: name,
+            phone: phone,
+            address: address,
+            latitude: latitude,
+            longitude: longitude,
+            sourceType: sourceType,
+            foodTypes: foodTypes.isEmpty ? [.groceries] : foodTypes,
+            hoursOfOperation: hoursOfOperation,
+            duration: duration,
+            publicTransitAccessible: publicTransitAccessible,
+            availability: availability,
+            hasExcessFood: hasExcessFood,
+            isVerified: isVerified,
+            isOpen: isOpen,
+            lastVerified: nil,
+            waitTimeEstimate: waitTimeEstimate
+        )
     }
 
     // MARK: - Mock Chat Logic
@@ -169,6 +286,19 @@ final class APIClient {
 
         return "I can help you find food nearby! Try asking about cooked meals, groceries, or tell me what you need and I'll find the best match for you."
     }
+}
+
+// MARK: - Create Source Payload (matches backend SourceCreate schema)
+
+private struct CreateSourcePayload: Encodable {
+    let name: String
+    let phone: String?
+    let address: String?
+    let types_json: [String]?
+    let duration: String?
+    let is_accessible: Bool?
+    let availability: String?
+    let excess_food: Bool?
 }
 
 // MARK: - API Errors
