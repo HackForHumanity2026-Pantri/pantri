@@ -22,7 +22,6 @@ class Sources(Base):
     is_accessible = Column(Boolean, nullable=True, default=None)
     availability = Column(String)
     excess_food  = Column(Boolean)
-    notes        = Column(String, nullable=True)
     verification_status    = Column(String, nullable=True)
     verification_failed_at = Column(DateTime, nullable=True)
 

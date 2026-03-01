@@ -21,7 +21,6 @@ FIELD_MAP: Dict[str, str] = {
     "address": "address",
     "food_type": "types_json",
     "isAccessibleViaPublicTransport": "is_accessible",
-    "notes": "notes",
     "wait_time": "duration",
 }
 

@@ -34,7 +34,7 @@ SCHEMA (return exactly this structure):
 }}
 
 ALLOWED FIELDS (use only these names):
-  hours, phone, address, food_type, isAccessibleViaPublicTransport, notes, wait_time
+  hours, phone, address, food_type, isAccessibleViaPublicTransport,wait_time
 
 RULES:
 1. Output MUST be valid JSON. No markdown, no ```json fences, no prose.

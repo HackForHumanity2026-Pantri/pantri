@@ -11,7 +11,6 @@ ALLOWED_FIELDS = {
     "address",
     "food_type",
     "isAccessibleViaPublicTransport",
-    "notes",
     "wait_time",
 }
 
