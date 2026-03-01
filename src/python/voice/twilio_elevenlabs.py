@@ -17,14 +17,16 @@ import asyncio
 import json
 import logging
 import os
+from datetime import datetime, timezone
 from typing import Optional
 
 import httpx
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPException
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPException, Depends
 from fastapi.responses import Response, JSONResponse
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
@@ -263,9 +265,6 @@ async def _forward_transcript(source_id: int, transcript: str):
 
 # ── Outbound Call Trigger ──────────────────────────────────────────────
 
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
-from fastapi import Depends
 from get_db import get_db
 from models.models import Sources
 
@@ -281,7 +280,6 @@ class OutboundCallRequest(BaseModel):
 
 def _mark_verification_failed(db: Session, source_id: int) -> None:
     """Set verification_status='verification_failed' with a timestamp."""
-    from datetime import datetime, timezone
     source = db.query(Sources).filter(Sources.id == source_id).first()
     if source:
         source.verification_status = "verification_failed"
@@ -337,7 +335,8 @@ async def initiate_outbound_call(
 
     # All retries exhausted — mark the food-bank record as failed.
     _mark_verification_failed(db, body.source_id)
-    raise HTTPException(status_code=502, detail=f"Call failed after {MAX_CALL_RETRIES} attempts: {last_error}")
+    logger.error("Call failed after %d attempts: %s", MAX_CALL_RETRIES, last_error)
+    raise HTTPException(status_code=502, detail=f"Call failed after {MAX_CALL_RETRIES} attempts")
 
 
 @router.post("/call-status")
