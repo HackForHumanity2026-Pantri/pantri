@@ -20,8 +20,8 @@ POSTGRES_PASSWORD=""
 POSTGRES_USER=""
 POSTGRES_HOST="localhost"
 POSTGRES_DB="pantri"
- Run main.py 
- 
+'''
+ Run main.py
 To get your changes into the `main` branch, follow these steps:
 
 ### Option 1: Merge via Pull Request (Recommended)
