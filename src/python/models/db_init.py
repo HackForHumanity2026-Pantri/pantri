@@ -5,6 +5,7 @@ from sqlalchemy import inspect
 
 from models.models import Sources, Restaurants, Buses
 from get_db import engine
+from services.calculate_bus import mark_bus_accessible
 
 
 def seed_from_json(db: Session, model, json_filename: str, mapping: dict):
@@ -110,3 +111,12 @@ def init_db(db: Session):
         )
 
     print("Database seeding complete.")
+
+    # Compute bus accessibility only for sources not yet evaluated
+    unprocessed = db.query(Sources).filter(Sources.is_accessible == None).all()
+    if unprocessed:
+        print(f"Computing bus accessibility for {len(unprocessed)} unprocessed sources...")
+        mark_bus_accessible(unprocessed, db)
+        print("Bus accessibility computed.")
+    else:
+        print("Bus accessibility already computed, skipping.")

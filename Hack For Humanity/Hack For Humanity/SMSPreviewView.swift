@@ -8,6 +8,7 @@ struct SMSPreviewView: View {
     let source: FoodSource
     let appState: AppState
     @State private var isSent = false
+    @State private var sendFailed = false
     @Environment(\.dismiss) private var dismiss
 
     var smsBody: String {
@@ -80,22 +81,44 @@ struct SMSPreviewView: View {
                         HStack(spacing: PantriSpacing.sm) {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundStyle(PantriColors.green)
-                            Text("SMS preview generated!")
+                            Text("SMS sent!")
                                 .font(PantriFonts.headline)
                                 .foregroundStyle(PantriColors.green)
+                        }
+                        .transition(.scale.combined(with: .opacity))
+                    } else if sendFailed {
+                        HStack(spacing: PantriSpacing.sm) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundStyle(PantriColors.destructive)
+                            Text("Failed to send SMS")
+                                .font(PantriFonts.headline)
+                                .foregroundStyle(PantriColors.destructive)
                         }
                         .transition(.scale.combined(with: .opacity))
                     } else {
                         Button {
                             Haptics.match()
-                            withAnimation(PantriAnimation.bouncy) {
-                                isSent = true
+                            Task {
+                                do {
+                                    try await appState.api.sendSMS(to: source.phone, body: smsBody)
+                                    await MainActor.run {
+                                        withAnimation(PantriAnimation.bouncy) {
+                                            isSent = true
+                                        }
+                                    }
+                                } catch {
+                                    await MainActor.run {
+                                        withAnimation(PantriAnimation.bouncy) {
+                                            sendFailed = true
+                                        }
+                                    }
+                                }
                             }
                         } label: {
                             HStack(spacing: PantriSpacing.sm) {
                                 Image(systemName: "message.fill")
                                     .font(.system(size: 16, weight: .semibold))
-                                Text("Preview SMS Send")
+                                Text("Send SMS")
                                     .font(PantriFonts.headline)
                             }
                             .foregroundStyle(.white)
@@ -107,7 +130,7 @@ struct SMSPreviewView: View {
                         .padding(.horizontal, PantriSpacing.md)
                     }
 
-                    Text("In production, this would send via the /api/sms/send endpoint.")
+                    Text("In live mode, this sends via the /sms/send endpoint.")
                         .font(PantriFonts.caption)
                         .foregroundStyle(PantriColors.secondaryText)
                         .multilineTextAlignment(.center)
