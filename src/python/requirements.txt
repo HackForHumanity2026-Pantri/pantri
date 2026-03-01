@@ -12,6 +12,7 @@ fastapi==0.134.0
 Flask==2.1.1
 greenlet==3.3.2
 h11==0.16.0
+httpcore==1.0.9
 httpx==0.28.1
 idna==3.11
 iniconfig==2.3.0
