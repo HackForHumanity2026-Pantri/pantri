@@ -8,6 +8,8 @@ from routes import sources
 from routes import chat as chat_routes
 from routes import verify as verify_routes
 from routes import sms as sms_routes
+from voice.router import router as voice_router
+import voice.models  # noqa: F401 – register tables with Base
 from get_db import Base, engine, SessionLocal
 from models.db_init import init_db
 
@@ -25,6 +27,7 @@ app.include_router(sources.router)
 app.include_router(chat_routes.router)
 app.include_router(verify_routes.router)
 app.include_router(sms_routes.router)
+app.include_router(voice_router)
 
 
 def main():
