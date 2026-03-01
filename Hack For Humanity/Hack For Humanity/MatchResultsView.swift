@@ -2,7 +2,7 @@ import SwiftUI
 import MapKit
 
 // MARK: - Match Results View
-// Shows top 3 matches with expandable detail sheets.
+// Shows all matches with expandable detail sheets.
 // Luma-like: stacked cards with spring expand, score breakdown drawer.
 
 struct MatchResultsView: View {
@@ -132,10 +132,10 @@ struct MatchCardView: View {
                     Text(match.source.name)
                         .font(PantriFonts.headline)
                         .foregroundStyle(PantriColors.black)
-                    Text(match.source.address)
+                    Text(match.source.fullAddress)
                         .font(PantriFonts.caption)
                         .foregroundStyle(PantriColors.secondaryText)
-                        .lineLimit(1)
+                        .lineLimit(2)
                 }
 
                 Spacer()
@@ -197,7 +197,7 @@ struct MatchDetailSheet: View {
                             .font(PantriFonts.title2)
                             .foregroundStyle(PantriColors.black)
 
-                        InfoRow(icon: "mappin", text: match.source.address)
+                        InfoRow(icon: "mappin", text: match.source.fullAddress)
                         InfoRow(icon: "phone", text: match.source.phone)
                         InfoRow(icon: "clock", text: match.source.hoursOfOperation)
                         InfoRow(icon: "figure.walk", text: String(format: "%.1f km away", match.distanceKm))

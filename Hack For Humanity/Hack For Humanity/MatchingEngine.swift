@@ -14,7 +14,7 @@ final class MatchingEngine {
     func findMatches(
         for request: UserRequest,
         from sources: [FoodSource],
-        limit: Int = 3
+        limit: Int? = nil
     ) -> [MatchResult] {
         let userLocation = CLLocationCoordinate2D(
             latitude: request.latitude,
@@ -40,7 +40,10 @@ final class MatchingEngine {
         }
         .sorted { $0.score > $1.score }
 
-        return Array(scored.prefix(limit))
+        if let limit {
+            return Array(scored.prefix(limit))
+        }
+        return scored
     }
 
     private func computeBreakdown(

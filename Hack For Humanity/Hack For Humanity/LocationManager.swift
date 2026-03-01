@@ -16,7 +16,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
     private let manager = CLLocationManager()
 
-    // Default to downtown LA for demo
+    // Fallback only used if location permission is denied
     static let defaultLocation = CLLocationCoordinate2D(latitude: 34.0522, longitude: -118.2437)
 
     var effectiveLocation: CLLocationCoordinate2D {
@@ -26,8 +26,14 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     override init() {
         super.init()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        manager.desiredAccuracy = kCLLocationAccuracyBest
         authorizationStatus = manager.authorizationStatus
+        // Auto-request permission and start updating on launch
+        if isAuthorized {
+            startUpdating()
+        } else if authorizationStatus == .notDetermined {
+            requestPermission()
+        }
     }
 
     func requestPermission() {

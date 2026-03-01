@@ -17,7 +17,7 @@ final class AppState {
     var selectedNeedType: FoodType = .cookedMeals
     var selectedTransport: TransportMode = .publicTransit
     var selectedUrgency: Urgency = .medium
-    var defaultCity: String = "Los Angeles"
+    var defaultCity: String = "Santa Clara"
     var language: String = "English"
 
     // Navigation
