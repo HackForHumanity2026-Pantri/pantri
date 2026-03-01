@@ -9,7 +9,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 MODEL = "llama3.1:8b"
 DEFAULT_TIMEOUT = 60  # seconds
 MAX_RETRIES = 3

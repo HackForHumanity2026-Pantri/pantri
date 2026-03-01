@@ -26,14 +26,17 @@ def ingest_call(body: IngestCallRequest, db: Session = Depends(get_db)):
     if change_req is None:
         return IngestCallResponse(proposed_change=None, applied=False, diff=None)
 
-    try:
-        applied, diff = apply_changes(db, change_req, transcript=body.transcript)
-    except Exception:
-        logger.exception("Error applying changes for source %s", body.source_id)
-        return IngestCallResponse(proposed_change=change_req, applied=False, diff=None)
+    # TODO: DB integration – apply validated changes to the Sources table.
+    # When ready, uncomment the block below and remove the early return.
+    # try:
+    #     applied, diff = apply_changes(db, change_req, transcript=body.transcript)
+    # except Exception:
+    #     logger.exception("Error applying changes for source %s", body.source_id)
+    #     return IngestCallResponse(proposed_change=change_req, applied=False, diff=None)
 
+    # For now, just return the extracted JSON without applying to DB.
     return IngestCallResponse(
         proposed_change=change_req,
-        applied=applied,
-        diff=diff,
+        applied=False,
+        diff=None,
     )
