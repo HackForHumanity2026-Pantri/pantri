@@ -2,16 +2,24 @@
 # AI will document...
 
 ### To set up backend
-Create a venv with
-'''python -m venv venv
-source venv/bin/activate'''  # On Windows: venv\Scripts\activate
+Create a venv with:
 
-In a .env folder put this:
- '''POSTGRES_PASSWORD=""
- POSTGRES_USER=""
- POSTGRES_HOST="localhost"
- POSTGRES_DB="pantri"'''
+```python
+python -m venv venv
+source venv/bin/activate
+```
+# On Windows:
+```
+venv\Scripts\activate
+```
 
+In a `.env` file put this:
+
+```python
+POSTGRES_PASSWORD=""
+POSTGRES_USER=""
+POSTGRES_HOST="localhost"
+POSTGRES_DB="pantri"
  Run main.py 
  
 To get your changes into the `main` branch, follow these steps:
