@@ -160,6 +160,22 @@ def test_search_sources_no_match():
     assert len(data) == 0
 
 
+def test_search_sources_optional_params():
+    """Verify /sources/search works without food_type, urgent_level, transportation."""
+    db = TestSessionLocal()
+    seed_test_source(db)
+    db.close()
+
+    response = client.get(
+        "/sources/search",
+        params={"lat": 37.34, "lng": -121.89},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) >= 1
+    assert data[0]["name"] == "Test Food Bank"
+
+
 # ── POST /sources ──
 
 
@@ -289,7 +305,8 @@ def test_source_response_format():
 
     # Verify all fields the iOS app expects are present
     expected_fields = [
-        "id", "name", "phone", "address", "latitude", "longitude",
+        "id", "name", "phone", "address", "city", "state",
+        "latitude", "longitude",
         "sourceType", "foodTypes", "hoursOfOperation", "duration",
         "publicTransitAccessible", "availability", "hasExcessFood",
         "isVerified", "isOpen",

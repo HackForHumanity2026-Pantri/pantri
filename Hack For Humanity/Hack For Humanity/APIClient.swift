@@ -19,7 +19,7 @@ final class APIClient {
         type: FoodType? = nil,
         openNow: Bool? = nil
     ) async throws -> [FoodSource] {
-        var components = URLComponents(string: "\(baseURL)/sources/search")
+        var components = URLComponents(string: "\(baseURL)/sources")
         var queryItems: [URLQueryItem] = []
         if let lat = latitude { queryItems.append(URLQueryItem(name: "lat", value: String(lat))) }
         if let lng = longitude { queryItems.append(URLQueryItem(name: "lng", value: String(lng))) }

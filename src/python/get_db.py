@@ -70,12 +70,12 @@ def _ensure_database_exists():
 
 _ensure_database_exists()
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    pool_pre_ping=True,   # Drops stale connections before use
-    pool_size=5,
-    max_overflow=10,
-)
+_engine_kwargs = {"pool_pre_ping": True}
+if not SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
+    _engine_kwargs["pool_size"] = 5
+    _engine_kwargs["max_overflow"] = 10
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL, **_engine_kwargs)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
