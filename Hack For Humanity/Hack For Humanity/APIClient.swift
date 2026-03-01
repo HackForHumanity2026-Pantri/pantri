@@ -184,6 +184,16 @@ final class APIClient {
         let id: UUID
         if let idString = dict["id"] as? String, let parsed = UUID(uuidString: idString) {
             id = parsed
+        } else if let intId = dict["id"] as? Int {
+            // Deterministic UUID from integer ID (matches backend uuid5 approach)
+            let idBytes = "pantri-source-\(intId)".data(using: .utf8)!
+            id = UUID(uuid: (
+                idBytes.hashValue > 0 ? UInt8(idBytes.hashValue & 0xFF) : 0,
+                UInt8((idBytes.hashValue >> 8) & 0xFF),
+                UInt8((idBytes.hashValue >> 16) & 0xFF),
+                UInt8((idBytes.hashValue >> 24) & 0xFF),
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, UInt8(intId & 0xFF)
+            ))
         } else {
             id = UUID()
         }

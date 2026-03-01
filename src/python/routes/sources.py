@@ -66,7 +66,7 @@ def format_hours_string(hours_json: list) -> str:
 
 def source_to_api_response(source, user_lat=None, user_lng=None):
     """Convert a DB source model to the JSON format expected by the iOS app."""
-    source_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, f"pantri-source-{source.id}"))
+    source_uuid = str(uuid.uuid5(uuid.NAMESPACE_OID, f"pantri-source-{source.id}"))
     open_now = is_open_now(source.hours_json) if source.hours_json else True
     hours_str = format_hours_string(source.hours_json) if source.hours_json else ""
 
@@ -78,8 +78,6 @@ def source_to_api_response(source, user_lat=None, user_lng=None):
                 food_types.append("Groceries")
             elif "cooked" in lower or "meal" in lower or "restaurant" in lower:
                 food_types.append("Cooked Meals")
-            else:
-                food_types.append("Groceries")
         food_types = list(dict.fromkeys(food_types))
 
     source_type = "Food Bank"
