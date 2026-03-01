@@ -186,6 +186,8 @@ struct ProviderRegisterView: View {
             name: name,
             phone: phone,
             address: address,
+            city: appState.defaultCity,
+            state: "CA",
             latitude: 34.0522 + Double.random(in: -0.05...0.05),
             longitude: -118.2437 + Double.random(in: -0.05...0.05),
             sourceType: sourceType,

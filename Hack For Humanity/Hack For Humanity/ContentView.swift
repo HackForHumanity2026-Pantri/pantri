@@ -12,7 +12,7 @@ import SwiftUI
 // Smooth crossfade transition between states.
 
 struct ContentView: View {
-    @State private var appState = AppState.shared
+    var appState = AppState.shared
 
     var body: some View {
         Group {
@@ -25,6 +25,9 @@ struct ContentView: View {
             }
         }
         .animation(PantriAnimation.smooth, value: appState.hasCompletedOnboarding)
+        .task {
+            await appState.loadSourcesFromBackend()
+        }
     }
 }
 

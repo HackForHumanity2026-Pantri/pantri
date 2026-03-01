@@ -22,6 +22,7 @@ enum FoodSourceType: String, Codable, CaseIterable, Identifiable {
 enum FoodType: String, Codable, CaseIterable, Identifiable {
     case groceries = "Groceries"
     case cookedMeals = "Cooked Meals"
+    case freshProduce = "Fresh Produce"
 
     var id: String { rawValue }
 
@@ -29,6 +30,7 @@ enum FoodType: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .groceries: return "cart"
         case .cookedMeals: return "takeoutbag.and.cup.and.straw"
+        case .freshProduce: return "leaf"
         }
     }
 }
@@ -94,6 +96,8 @@ struct FoodSource: Identifiable, Codable, Equatable {
     var name: String
     var phone: String
     var address: String
+    var city: String
+    var state: String
     var latitude: Double
     var longitude: Double
     var sourceType: FoodSourceType
@@ -110,6 +114,10 @@ struct FoodSource: Identifiable, Codable, Equatable {
 
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+
+    var fullAddress: String {
+        [address, city, state].filter { !$0.isEmpty }.joined(separator: ", ")
     }
 
     func distance(from location: CLLocationCoordinate2D) -> Double {

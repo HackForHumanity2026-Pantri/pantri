@@ -77,12 +77,12 @@ struct SourceCardView: View {
                     Text(source.name)
                         .font(PantriFonts.headline)
                         .foregroundStyle(PantriColors.black)
-                        .lineLimit(1)
+                        .lineLimit(2)
 
-                    Text(source.address)
+                    Text(source.fullAddress)
                         .font(PantriFonts.caption)
                         .foregroundStyle(PantriColors.secondaryText)
-                        .lineLimit(1)
+                        .lineLimit(2)
                 }
 
                 Spacer()
@@ -94,19 +94,46 @@ struct SourceCardView: View {
                 }
             }
 
+            // Phone
+            if !source.phone.isEmpty {
+                HStack(spacing: 6) {
+                    Image(systemName: "phone.fill")
+                        .font(.system(size: 12))
+                        .foregroundStyle(PantriColors.green)
+                    Text(source.phone)
+                        .font(PantriFonts.footnote)
+                        .foregroundStyle(PantriColors.secondaryText)
+                }
+            }
+
+            // Hours
+            if !source.hoursOfOperation.isEmpty {
+                HStack(alignment: .top, spacing: 6) {
+                    Image(systemName: "clock.fill")
+                        .font(.system(size: 12))
+                        .foregroundStyle(PantriColors.green)
+                    Text(source.hoursOfOperation)
+                        .font(PantriFonts.caption)
+                        .foregroundStyle(PantriColors.secondaryText)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+
             // Badges row
-            HStack(spacing: PantriSpacing.xs) {
-                ForEach(source.foodTypes) { type in
-                    BadgeView(text: type.rawValue, icon: type.icon, color: PantriColors.green)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: PantriSpacing.xs) {
+                    ForEach(source.foodTypes) { type in
+                        BadgeView(text: type.rawValue, icon: type.icon, color: PantriColors.green)
+                    }
+
+                    if source.isVerified {
+                        BadgeView(text: "Verified", icon: "checkmark.seal.fill", color: PantriColors.green)
+                    }
+
+                    StatusBadge(isOpen: source.isOpen)
+
+                    AvailabilityBadge(availability: source.availability)
                 }
-
-                if source.isVerified {
-                    BadgeView(text: "Verified", icon: "checkmark.seal.fill", color: PantriColors.green)
-                }
-
-                StatusBadge(isOpen: source.isOpen)
-
-                AvailabilityBadge(availability: source.availability)
             }
 
             if showScore, let score {

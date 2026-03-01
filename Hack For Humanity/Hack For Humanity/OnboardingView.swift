@@ -87,18 +87,7 @@ struct OnboardingView: View {
                     }
                     .accessibilityHint("Opens the provider view to register and manage food sources")
 
-                    Button {
-                        Haptics.selection()
-                        withAnimation(PantriAnimation.snappy) {
-                            appState.userMode = .user
-                            appState.hasCompletedOnboarding = true
-                        }
-                    } label: {
-                        Text("Skip for now")
-                            .font(PantriFonts.subheadline)
-                            .foregroundStyle(PantriColors.secondaryText)
-                    }
-                    .padding(.top, PantriSpacing.xs)
+
                 }
                 .offset(y: buttonsOffset)
                 .opacity(buttonsOpacity)

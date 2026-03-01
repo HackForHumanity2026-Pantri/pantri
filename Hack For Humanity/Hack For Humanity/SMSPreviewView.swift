@@ -130,7 +130,7 @@ struct SMSPreviewView: View {
                         .padding(.horizontal, PantriSpacing.md)
                     }
 
-                    Text("In live mode, this sends via the /sms/send endpoint.")
+                    Text("This sends via the /sms/send endpoint.")
                         .font(PantriFonts.caption)
                         .foregroundStyle(PantriColors.secondaryText)
                         .multilineTextAlignment(.center)
