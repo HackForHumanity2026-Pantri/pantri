@@ -23,6 +23,11 @@ import httpx
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPException
 from fastapi.responses import Response, JSONResponse
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/twilio", tags=["twilio"])
