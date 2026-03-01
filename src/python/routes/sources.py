@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from models.models import Sources
+from models.models import Sources, Buses
 from sqlalchemy.orm import Session
 from get_db import get_db
 
@@ -23,6 +23,12 @@ async def get_sources_closest(my_lat: float, my_long: float, db: Session = Depen
     ]
     results.sort(key = lambda x: x.distance_km)
     return results[:10]
+
+#temp location
+@router.get("/buses")
+async def get_busees(db: Session = Depends(get_db)):
+    buses = db.query(Buses).all()
+    return buses
 
 def haversine(lat1, lon1, lat2, lon2):
     from math import radians, cos, sin, asin, sqrt

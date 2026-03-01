@@ -1,0 +1,681 @@
+[
+  {
+    "id": 1,
+    "name": "The Salvation Army Community Center",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "200 W 5th St",
+    "city": "Gilroy",
+    "state": "CA",
+    "zip": "95020",
+    "lat": 37.0058,
+    "lng": -121.5764,
+    "phone": "408-848-5373",
+    "hours_json": [
+      {
+        "day": "Mon",
+        "open": "12:00",
+        "close": "14:00"
+      },
+      {
+        "day": "Tue",
+        "open": "12:00",
+        "close": "14:00"
+      },
+      {
+        "day": "Wed",
+        "open": "12:00",
+        "close": "14:00"
+      },
+      {
+        "day": "Thu",
+        "open": "10:30",
+        "close": "12:30"
+      },
+      {
+        "day": "Thu",
+        "open": "12:00",
+        "close": "14:00"
+      },
+      {
+        "day": "Thu",
+        "open": "13:30",
+        "close": "14:30"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "11:30"
+      },
+      {
+        "day": "Fri",
+        "open": "12:00",
+        "close": "14:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Cathedral of Faith Gilroy",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "7250 Forest St",
+    "city": "Gilroy",
+    "state": "CA",
+    "zip": "95020",
+    "lat": 36.9929,
+    "lng": -121.5553,
+    "phone": "408-267-4691",
+    "hours_json": [
+      {
+        "day": "Sat",
+        "open": "10:00",
+        "close": "12:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Milpitas Food Pantry",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "1440 S. Main Street",
+    "city": "Milpitas",
+    "state": "CA",
+    "zip": "95035",
+    "lat": 37.4299,
+    "lng": -121.8997,
+    "phone": "408-946-5564",
+    "hours_json": [
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Thu",
+        "open": "18:00",
+        "close": "20:00"
+      },
+      {
+        "day": "Sat",
+        "open": "09:00",
+        "close": "12:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Jose Higuera Adobe Building",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "457 E Calaveras Blvd",
+    "city": "Milpitas",
+    "state": "CA",
+    "zip": "95035",
+    "lat": 37.4330,
+    "lng": -121.9065,
+    "phone": "408-586-3210",
+    "hours_json": [
+      {
+        "day": "Mon",
+        "open": "08:30",
+        "close": "11:30"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Morgan Hill Community Center",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "17000 Monterey Road",
+    "city": "Morgan Hill",
+    "state": "CA",
+    "zip": "95037",
+    "lat": 37.1301,
+    "lng": -121.6541,
+    "phone": "408-586-3210",
+    "hours_json": [
+      {
+        "day": "Tue",
+        "open": "09:30",
+        "close": "12:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Community Services Agency of Mountain View & Los Altos",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "204 Stierlin Rd",
+    "city": "Mountain View",
+    "state": "CA",
+    "zip": "94043",
+    "lat": 37.3905,
+    "lng": -122.0739,
+    "phone": "650-968-0836",
+    "hours_json": [
+      {
+        "day": "Mon",
+        "open": "14:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Thu",
+        "open": "11:30",
+        "close": "13:30"
+      },
+      {
+        "day": "Fri",
+        "open": "14:00",
+        "close": "16:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Jewish Family & Children Services (JFCS) Koret Family Resource Center",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "200 Channing Avenue",
+    "city": "Palo Alto",
+    "state": "CA",
+    "zip": "94301",
+    "lat": 37.4448,
+    "lng": -122.1605,
+    "phone": "650-688-3030",
+    "hours_json": [
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Thu",
+        "open": "08:30",
+        "close": "12:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "17:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Loaves & Fishes Family Kitchen",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "1534 Berger Drive",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95112",
+    "lat": 37.3454,
+    "lng": -121.8413,
+    "phone": "408-922-9085",
+    "hours_json": [
+      {
+        "day": "Mon",
+        "open": "14:30",
+        "close": "15:30"
+      },
+      {
+        "day": "Tue",
+        "open": "14:30",
+        "close": "15:30"
+      },
+      {
+        "day": "Wed",
+        "open": "14:30",
+        "close": "15:30"
+      },
+      {
+        "day": "Thu",
+        "open": "14:30",
+        "close": "15:30"
+      },
+      {
+        "day": "Fri",
+        "open": "14:30",
+        "close": "15:30"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Most Holy Trinity Church",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "2040 Nassau Drive",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95122",
+    "lat": 37.3596,
+    "lng": -121.8716,
+    "phone": "408-729-0101",
+    "hours_json": [
+      {
+        "day": "Mon",
+        "open": "15:30",
+        "close": "16:30"
+      },
+      {
+        "day": "Tue",
+        "open": "15:30",
+        "close": "16:30"
+      },
+      {
+        "day": "Wed",
+        "open": "15:30",
+        "close": "16:30"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Portuguese Organization for Social Services and Opportunities (POSSO)",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "1115 E Santa Clara St",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95116",
+    "lat": 37.3387,
+    "lng": -121.8866,
+    "phone": "408-293-0877",
+    "hours_json": [
+      {
+        "day": "Wed",
+        "open": "08:00",
+        "close": "09:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:30",
+        "close": "11:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Sacred Heart Community Service",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "1381 South First Street",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95110",
+    "lat": 37.3209,
+    "lng": -121.8792,
+    "phone": "408-278-2160",
+    "hours_json": [
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "18:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "12:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Santa Maria Urban Ministry",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "778 South Almaden Avenue",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95110",
+    "lat": 37.3318,
+    "lng": -121.9049,
+    "phone": "408-292-3314",
+    "hours_json": [
+      {
+        "day": "Sat",
+        "open": "09:00",
+        "close": "11:45"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 13,
+    "name": "St. James African Methodist Episcopal Church",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "1916 East San Antonio Street",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95116",
+    "lat": 37.3380,
+    "lng": -121.8890,
+    "phone": "408-251-1588",
+    "hours_json": [
+      {
+        "day": "Sat",
+        "open": "09:00",
+        "close": "12:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 14,
+    "name": "St. Martin of Tours Parish",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "200 O'Connor Dr",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95128",
+    "lat": 37.3333,
+    "lng": -121.8725,
+    "phone": "408-294-8953",
+    "hours_json": [],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 15,
+    "name": "St. Victor's Food Pantry Ministry",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "3108 Sierra Road",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95132",
+    "lat": 37.3595,
+    "lng": -121.8380,
+    "phone": "408-251-7055",
+    "hours_json": [
+      {
+        "day": "Sat",
+        "open": "10:00",
+        "close": "12:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "St. Christopher Parish & School",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "2278 Booksin Ave",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95125",
+    "lat": 37.2877,
+    "lng": -121.8565,
+    "phone": "408-269-2226",
+    "hours_json": [
+      {
+        "day": "Wed",
+        "open": "16:00",
+        "close": "17:30"
+      },
+      {
+        "day": "Thu",
+        "open": "16:00",
+        "close": "17:30"
+      },
+      {
+        "day": "Fri",
+        "open": "16:00",
+        "close": "17:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Cathedral of Faith",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "2315 Canoas Garden Ave",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95125",
+    "lat": 37.2878,
+    "lng": -121.8427,
+    "phone": "408-267-4691",
+    "hours_json": [],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 18,
+    "name": "City Team San Jose",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "1297 North 13th Street",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95112",
+    "lat": 37.3600,
+    "lng": -121.8735,
+    "phone": "888-248-9832",
+    "hours_json": [
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "12:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "12:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Korean American Community Services of Silicon Valley",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "136 Burton Ave",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95112",
+    "lat": 37.3174,
+    "lng": -121.8209,
+    "phone": "408-920-9733",
+    "hours_json": [],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 20,
+    "name": "St. Leo's Community Market",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "88 Race Street",
+    "city": "San Jose",
+    "state": "CA",
+    "zip": "95126",
+    "lat": 37.3800,
+    "lng": -121.9233,
+    "phone": "408-293-3503",
+    "hours_json": [
+      {
+        "day": "Thu",
+        "open": "16:00",
+        "close": "18:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Hope Lutheran Church (ELCA)",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "2383 Pacific Dr",
+    "city": "Santa Clara",
+    "state": "CA",
+    "zip": "95051",
+    "lat": 37.3488,
+    "lng": -121.9772,
+    "phone": "408-248-3668",
+    "hours_json": [],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  },
+  {
+    "id": 22,
+    "name": "River of Life Foundation",
+    "type": "Food Bank",
+    "duration": "permanent",
+    "address": "1177 Laurelwood Rd",
+    "city": "Santa Clara",
+    "state": "CA",
+    "zip": "95054",
+    "lat": 37.3541,
+    "lng": -121.9552,
+    "phone": "408-567-0877",
+    "hours_json": [
+      {
+        "day": "Sun",
+        "open": "14:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Tue",
+        "open": "10:00",
+        "close": "13:00"
+      },
+      {
+        "day": "Thu",
+        "open": "10:00",
+        "close": "13:00"
+      }
+    ],
+    "types_json": [
+      "groceries",
+      "fresh produce"
+    ]
+  }
+]

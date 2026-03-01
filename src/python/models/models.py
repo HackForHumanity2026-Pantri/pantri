@@ -9,6 +9,7 @@ class Sources(Base):
     id               = Column(Integer, primary_key=True, index=True)
     name             = Column(String, nullable=False)
     type             = Column(String)
+    duration        = Column(String)
     address          = Column(String)
     city             = Column(String)
     state            = Column(String)
@@ -18,6 +19,31 @@ class Sources(Base):
     phone            = Column(String)
     hours_json       = Column(JSON)
     types_json       = Column(JSON)
+
+class Restaurants(Base):
+    __tablename__ = "restaurants"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    name            = Column(String, nullable=False)
+    type            = Column(String)
+    duration        = Column(String)
+    address         = Column(String)
+    city            = Column(String)
+    state =           Column(String)
+    zip             = Column(String)
+    lat             = Column(Float)
+    lng             = Column(Float)
+    phone          = Column(String)
+    hours_json     = Column(JSON)
+    types_json     = Column(JSON)
+
+class Buses(Base):
+    __tablename__ = "buses"
+
+    id             = Column(String, primary_key=True, index=True)
+    name          = Column(String, nullable=False)
+    lat           = Column(Float)
+    lng           = Column(Float)
 
 class Requests(Base):
     __tablename__ = "requests"

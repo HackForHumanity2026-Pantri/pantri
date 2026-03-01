@@ -4,7 +4,6 @@ import uvicorn
 from fastapi import FastAPI
 from routes import sources
 from get_db import Base, engine, SessionLocal
-from models.models import Sources, Requests
 from models.db_init import init_db
 
 app = FastAPI()
