@@ -2,6 +2,7 @@
 
 import uvicorn
 from fastapi import FastAPI
+from sqlalchemy import text
 from routes import sources
 from get_db import Base, engine, SessionLocal
 from models.db_init import init_db
@@ -24,6 +25,14 @@ def main():
         init_db(db)
     finally:
         db.close()
+
+    # Reset sequences to avoid ID conflicts after seeding
+    with engine.begin() as conn:
+        for table in ("sources", "restaurants"):
+            conn.execute(text(
+                f"SELECT setval(pg_get_serial_sequence('{table}', 'id'), COALESCE(MAX(id), 0)) FROM {table}"
+            ))
+    print("Sequences reset.")
 
 
 if __name__ == "__main__":

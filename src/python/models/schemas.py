@@ -1,20 +1,43 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
-class Sources(BaseModel):
-	id: str
-	name: str
-	type: str
-	address: str
-	state: str
-	city: str
-	lat: float
-	ing: float
-	phone: str
-	hours_json: list[dict[str,str]]
-	types_json: list[str]
+
+class HoursEntry(BaseModel):
+    day: str
+    open: str
+    close: str
+
+
+class SourceCreate(BaseModel):
+    name: str
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zip: Optional[str] = None
+    types_json: Optional[List[str]] = None       # food available e.g. ["groceries", "cooked meals"]
+    hours_json: Optional[List[HoursEntry]] = None
+    duration: Optional[str] = None               # "permanent", "temporary", etc.
+    is_accessible: Optional[bool] = None
+    availability: Optional[str] = None           # "open", "by_appointment", etc.
+    excess_food: Optional[bool] = None
+
+
+class RestaurantCreate(BaseModel):
+    name: str
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zip: Optional[str] = None
+    types_json: Optional[List[str]] = None
+    hours_json: Optional[List[HoursEntry]] = None
+    duration: Optional[str] = None
+    accessible: Optional[bool] = None
+    availability: Optional[str] = None
+    excess_food: Optional[bool] = None
 
 class Requests(BaseModel):
 	id: str
