@@ -47,25 +47,31 @@ def apply_changes(
     diff: Dict = {}
 
     if all_confident:
-        for change in change_req.changes:
-            if change.field not in ALLOWED_FIELDS:
-                logger.warning("Skipping disallowed field: %s", change.field)
-                continue
+        try:
+            for change in change_req.changes:
+                if change.field not in ALLOWED_FIELDS:
+                    logger.warning("Skipping disallowed field: %s", change.field)
+                    continue
 
-            old_val = getattr(source, change.field, None)
-            setattr(source, change.field, change.new_value)
-            diff[change.field] = {"old": old_val, "new": change.new_value}
+                old_val = getattr(source, change.field, None)
+                setattr(source, change.field, change.new_value)
+                diff[change.field] = {"old": old_val, "new": change.new_value}
 
-            db.add(AuditLog(
-                source_id=change_req.source_id,
-                field=change.field,
-                old_value=json.dumps(old_val) if old_val is not None else None,
-                new_value=json.dumps(change.new_value),
-                confidence=change.confidence,
-                applied=True,
-            ))
+                db.add(AuditLog(
+                    source_id=change_req.source_id,
+                    field=change.field,
+                    old_value=json.dumps(old_val) if old_val is not None else None,
+                    new_value=json.dumps(change.new_value) if change.new_value is not None else None,
+                    confidence=change.confidence,
+                    applied=True,
+                ))
 
-        db.commit()
+            db.commit()
+        except Exception:
+            db.rollback()
+            logger.exception("Failed to apply changes for source %s", change_req.source_id)
+            return False, None
+
         logger.info(
             "Applied %d change(s) to source %s",
             len(diff),
@@ -74,14 +80,18 @@ def apply_changes(
         return True, diff
 
     # Below threshold → store as pending proposal.
-    db.add(PendingProposal(
-        source_id=change_req.source_id,
-        changes_json=[c.model_dump() for c in change_req.changes],
-        summary=change_req.summary,
-        transcript=transcript,
-        status="pending",
-    ))
-    db.commit()
+    try:
+        db.add(PendingProposal(
+            source_id=change_req.source_id,
+            changes_json=[c.model_dump() for c in change_req.changes],
+            summary=change_req.summary,
+            transcript=transcript,
+            status="pending",
+        ))
+        db.commit()
+    except Exception:
+        db.rollback()
+        logger.exception("Failed to store pending proposal for source %s", change_req.source_id)
     logger.info(
         "Stored pending proposal for source %s (low confidence)",
         change_req.source_id,

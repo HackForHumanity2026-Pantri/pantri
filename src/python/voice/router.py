@@ -1,5 +1,6 @@
 """FastAPI router for the voice-verification agent pipeline."""
 
+import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends
@@ -9,6 +10,8 @@ from get_db import get_db
 from .agent_extract import extract_changes
 from .db_apply import apply_changes
 from .schemas import IngestCallRequest, IngestCallResponse
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["voice"])
 
@@ -23,7 +26,12 @@ def ingest_call(body: IngestCallRequest, db: Session = Depends(get_db)):
     if change_req is None:
         return IngestCallResponse(proposed_change=None, applied=False, diff=None)
 
-    applied, diff = apply_changes(db, change_req, transcript=body.transcript)
+    try:
+        applied, diff = apply_changes(db, change_req, transcript=body.transcript)
+    except Exception:
+        logger.exception("Error applying changes for source %s", body.source_id)
+        return IngestCallResponse(proposed_change=change_req, applied=False, diff=None)
+
     return IngestCallResponse(
         proposed_change=change_req,
         applied=applied,
