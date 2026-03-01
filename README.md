@@ -1,5 +1,4 @@
 # Pantri
-# AI will document...
 
 ### To set up backend
 Create a venv with:
@@ -13,7 +12,7 @@ source venv/bin/activate
 venv\Scripts\activate
 ```
 
-In a `.env` file put this:
+Create a `.env` file in the python folder and put this:
 
 ```python
 POSTGRES_PASSWORD=""
