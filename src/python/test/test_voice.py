@@ -25,7 +25,7 @@ from get_db import Base, get_db
 from main import app
 from models.models import Sources
 from voice.models import PendingProposal, AuditLog
-from voice.schemas import Change, ChangeRequest
+from voice.schemas import Change, ChangeRequest, ALLOWED_FIELDS
 from voice.db_apply import apply_changes, CONFIDENCE_THRESHOLD
 from voice.agent_extract import SYSTEM_PROMPT, FEW_SHOT_EXAMPLES, build_prompt
 
@@ -181,24 +181,17 @@ def test_apply_empty_changes():
     db.close()
 
 
-def test_apply_disallowed_field_skipped():
-    """Fields not in ALLOWED_FIELDS should be silently skipped."""
-    db = TestSessionLocal()
-    _seed_source(db)
+def test_disallowed_field_rejected_by_schema():
+    """Fields not in ALLOWED_FIELDS should be rejected at the Pydantic level."""
+    with pytest.raises(Exception):
+        Change(field="lat", new_value=0.0, confidence=0.99)
 
-    cr = ChangeRequest(
-        source_id=1,
-        changes=[
-            Change(field="lat", new_value=0.0, confidence=0.99),  # not allowed
-        ],
-        summary="Trying to change lat",
-    )
-    applied, diff = apply_changes(db, cr)
-    # applied is True (all confident) but diff is empty because field was skipped
-    assert applied is True
-    assert diff == {}
 
-    db.close()
+def test_allowed_fields_constant():
+    """ALLOWED_FIELDS should contain exactly the expected field names."""
+    expected = {"hours", "phone", "address", "food_type",
+                "isAccessibleViaPublicTransport", "notes", "wait_time"}
+    assert ALLOWED_FIELDS == expected
 
 
 # ── /ingest_call endpoint tests (Ollama mocked) ─────────────────────
@@ -215,7 +208,7 @@ MOCK_OLLAMA_RESPONSE = json.dumps({
 
 @patch("voice.ollama_client.requests.post")
 def test_ingest_call_applies(mock_post):
-    """POST /ingest_call should apply high-confidence changes."""
+    """POST /ingest_call should return proposed changes without applying."""
     db = TestSessionLocal()
     _seed_source(db)
     db.close()
@@ -232,8 +225,8 @@ def test_ingest_call_applies(mock_post):
     })
     assert resp.status_code == 200
     data = resp.json()
-    assert data["applied"] is True
-    assert data["diff"]["phone"]["new"] == "408-777-7777"
+    assert data["applied"] is False
+    assert data["diff"] is None
     assert data["proposed_change"] is not None
 
 
@@ -350,7 +343,7 @@ def test_change_schema_evidence_optional():
 
 @patch("voice.ollama_client.requests.post")
 def test_ingest_call_field_mapping_food_type(mock_post):
-    """LLM field 'food_type' should map to DB column 'types_json'."""
+    """LLM field 'food_type' should be accepted and returned in proposed_change."""
     db = TestSessionLocal()
     _seed_source(db)
     db.close()
@@ -379,19 +372,14 @@ def test_ingest_call_field_mapping_food_type(mock_post):
     })
     assert resp.status_code == 200
     data = resp.json()
-    assert data["applied"] is True
-    assert "food_type" in data["diff"]
-
-    # Verify DB column types_json was updated
-    db = TestSessionLocal()
-    src = db.query(Sources).get(1)
-    assert src.types_json == "hot meals, groceries"
-    db.close()
+    assert data["proposed_change"] is not None
+    assert data["proposed_change"]["changes"][0]["field"] == "food_type"
+    assert data["applied"] is False
 
 
 @patch("voice.ollama_client.requests.post")
 def test_ingest_call_field_mapping_wait_time(mock_post):
-    """LLM field 'wait_time' should map to DB column 'duration'."""
+    """LLM field 'wait_time' should be accepted and returned in proposed_change."""
     db = TestSessionLocal()
     _seed_source(db)
     db.close()
@@ -420,12 +408,9 @@ def test_ingest_call_field_mapping_wait_time(mock_post):
     })
     assert resp.status_code == 200
     data = resp.json()
-    assert data["applied"] is True
-
-    db = TestSessionLocal()
-    src = db.query(Sources).get(1)
-    assert src.duration == "20 minutes"
-    db.close()
+    assert data["proposed_change"] is not None
+    assert data["proposed_change"]["changes"][0]["field"] == "wait_time"
+    assert data["applied"] is False
 
 
 # ── Twilio endpoint tests ───────────────────────────────────────────
@@ -478,8 +463,8 @@ def test_twilio_voice_outbound_no_source_id():
 
 
 @patch("voice.ollama_client.requests.post")
-def test_audit_log_stores_transcript_and_extracted_json(mock_post):
-    """AuditLog rows should contain raw_transcript and extracted_json."""
+def test_audit_log_not_written_yet(mock_post):
+    """With DB integration deferred, no AuditLog rows should be written."""
     db = TestSessionLocal()
     _seed_source(db)
     db.close()
@@ -496,14 +481,11 @@ def test_audit_log_stores_transcript_and_extracted_json(mock_post):
         "transcript": transcript_text,
     })
     assert resp.status_code == 200
-    assert resp.json()["applied"] is True
+    assert resp.json()["applied"] is False
 
     db = TestSessionLocal()
     log = db.query(AuditLog).filter_by(source_id=1).first()
-    assert log is not None
-    assert log.raw_transcript == transcript_text
-    assert log.extracted_json is not None
-    assert isinstance(log.extracted_json, list)
+    assert log is None  # No audit log yet – DB integration is deferred
     db.close()
 
 

@@ -3,7 +3,18 @@
 from datetime import datetime
 from typing import List, Optional, Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+# Fields the LLM is allowed to propose changes for.
+ALLOWED_FIELDS = {
+    "hours",
+    "phone",
+    "address",
+    "food_type",
+    "isAccessibleViaPublicTransport",
+    "notes",
+    "wait_time",
+}
 
 
 class Change(BaseModel):
@@ -18,6 +29,15 @@ class Change(BaseModel):
     evidence: Optional[str] = Field(
         None, description="Verbatim sentence(s) from transcript supporting this change"
     )
+
+    @field_validator("field")
+    @classmethod
+    def field_must_be_allowed(cls, v: str) -> str:
+        if v not in ALLOWED_FIELDS:
+            raise ValueError(
+                f"Field '{v}' is not allowed. Must be one of: {sorted(ALLOWED_FIELDS)}"
+            )
+        return v
 
 
 class ChangeRequest(BaseModel):
